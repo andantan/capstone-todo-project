@@ -4,11 +4,14 @@ package org.zerock.todoserviceproject.domain.service.module.query;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
+import org.zerock.todoserviceproject.application.dto.todo.page.RequestFilterDTO;
 import org.zerock.todoserviceproject.application.dto.todo.page.RequestPageDTO;
+import org.zerock.todoserviceproject.application.dto.todo.page.ResponsePageDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
 import org.zerock.todoserviceproject.domain.repository.TodoRepository;
 
@@ -69,5 +72,54 @@ public class TodoQueryServiceImpl implements TodoQueryService {
                 .toList();
 
         return responseMapper.getResponseMap(responseBodyTodoDTOList);
+    }
+
+    @Override
+    public List<Map<String, Object>> requestQueryPaginatedTodoList(Boolean desc, Integer page, Integer size) {
+        // Integer maxPage = Math.toIntExact((todoRepository.count() / size) + 1);     // Max Page
+
+        // if (maxPage < page) { throw new PageIndexOutOfRangeException(page, maxPage); }
+
+        RequestPageDTO requestPageDTO = RequestPageDTO.builder().desc(desc).page(page).size(size).build();
+
+        Page<ResponseQueryTodoDTO> resultPage = todoRepository.requestFindAll(requestPageDTO);
+
+        ResponsePageDTO responsePageDTO = ResponsePageDTO.fullBuilder()
+                .requestPageDTO(requestPageDTO)
+                .dtoList(resultPage.toList())
+                .build();
+
+        return responsePageDTO.toMap();
+    }
+
+    @Override
+    public List<Map<String, Object>> requestQueryFilteredTodoList(Boolean desc, Integer page, Integer size, RequestFilterDTO requestFilterDTO) {
+        RequestPageDTO requestPageDTO = RequestPageDTO.builder()
+                .desc(desc)
+                .page(page)
+                .size(size)
+                .keyword(requestFilterDTO.getKeyword())
+                .writer(requestFilterDTO.getWriter())
+                .from(requestFilterDTO.getFrom())
+                .to(requestFilterDTO.getTo())
+                .completed(requestFilterDTO.getCompleted())
+                .build();
+
+        Page<ResponseQueryTodoDTO> resultPage = todoRepository.requestFindAll(requestPageDTO);
+
+//        TODO: Clarify bound exception
+//        Integer maxPage = (resultPage.getSize() / size) + 1;     // Max Page
+//
+//        log.info("SIZE: {}", resultPage.getSize());
+//        log.info("MAXPAGE: {}", maxPage);
+//
+//        if (maxPage < page) { throw new PageIndexOutOfRangeException(page, maxPage); }
+
+        ResponsePageDTO responsePageDTO = ResponsePageDTO.fullBuilder()
+                .requestPageDTO(requestPageDTO)
+                .dtoList(resultPage.toList())
+                .build();
+
+        return responsePageDTO.toMap();
     }
 }
