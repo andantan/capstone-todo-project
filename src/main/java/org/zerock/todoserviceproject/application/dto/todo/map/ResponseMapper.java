@@ -11,50 +11,13 @@ import org.zerock.todoserviceproject.application.dto.todo.projection.response.Re
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class ResponseMapper {
-
-    public Map<String, String> getResponseMap(TodoEntity todoEntity, String execution, String status) {
-
-        Map<String, String> responseMap = this.getDefaultResponseMap(
-                todoEntity.getTno(),
-                todoEntity.getTitle(),
-                todoEntity.getWriter(),
-                todoEntity.getDueDate(),
-                todoEntity.isComplete()
-        );
-
-        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
-                execution, status
-        );
-
-        responseMap.putAll(conditionResponseMap);
-
-        return responseMap;
-
-    }
-
-    public Map<String, String> getResponseMap(TodoDTO todoDTO, String execution, String status) {
-        Map<String, String> responseMap = this.getDefaultResponseMap(
-                todoDTO.getTno(),
-                todoDTO.getTitle(),
-                todoDTO.getWriter(),
-                todoDTO.getDueDate(),
-                todoDTO.isComplete()
-        );
-
-        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
-                execution, status
-        );
-
-        responseMap.putAll(conditionResponseMap);
-
-        return responseMap;
-    }
-
 
     public Map<String, String> getResponseMap(
             ResponseRegisterTodoDTO responseRegisterTodoDTO, String execution, String status
@@ -83,7 +46,7 @@ public class ResponseMapper {
     ) {
 
         Map<String, String> responseMap =  this.getDefaultResponseMap(
-                null,
+                responseQueryTodoDTO.getTno(),
                 responseQueryTodoDTO.getTitle(),
                 responseQueryTodoDTO.getWriter(),
                 responseQueryTodoDTO.getDueDate(),
@@ -97,6 +60,27 @@ public class ResponseMapper {
         responseMap.putAll(conditionResponseMap);
 
         return responseMap;
+    }
+
+
+    public List<Map<String, Object>> getResponseMap(
+            List<ResponseQueryTodoDTO> responseQueryTodoDTOList
+    ) {
+        int total = responseQueryTodoDTOList.size();
+        List<Map<String, Object>> mapList = new ArrayList<>();
+
+        for (int index = 0; index < total; index++) {
+            Map<String, Object> responseMap = new HashMap<>();
+
+            responseMap.put("index", index + 1);
+            responseMap.put("content", this.getResponseMap(
+                    responseQueryTodoDTOList.get(index), "query", "success"
+            ));
+
+            mapList.add(responseMap);
+        }
+
+        return mapList;
     }
 
 
@@ -179,6 +163,7 @@ public class ResponseMapper {
 
     public ResponseQueryTodoDTO mapToQueryResponseTodoDTO(TodoDTO todoDTO) {
         return ResponseQueryTodoDTO.builder()
+                .tno(todoDTO.getTno())
                 .title(todoDTO.getTitle())
                 .writer(todoDTO.getWriter())
                 .dueDate(todoDTO.getDueDate())
@@ -189,6 +174,7 @@ public class ResponseMapper {
 
     public ResponseModifyTodoDTO mapToModifyResponseTodoDTO(TodoDTO todoDTO) {
         return ResponseModifyTodoDTO.builder()
+                .tno(todoDTO.getTno())
                 .title(todoDTO.getTitle())
                 .writer(todoDTO.getWriter())
                 .dueDate(todoDTO.getDueDate())

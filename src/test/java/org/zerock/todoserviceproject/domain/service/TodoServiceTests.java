@@ -19,11 +19,11 @@ public class TodoServiceTests {
     public void todoServiceTestQueryById() {
         log.info(
                 "TodoServiceTests::todoServiceTestQueryById -> TodoDTO(tno=245) : {}",
-                this.todoQueryService.requestFindTodo(245L)
+                this.todoQueryService.requestQueryTodo(245L)
         );
         log.info(
                 "TodoServiceTests::todoServiceTestQueryById -> TodoDTO(tno=425) : {}",
-                this.todoQueryService.requestFindTodo(425L)
+                this.todoQueryService.requestQueryTodo(425L)
         );
     }
 }
