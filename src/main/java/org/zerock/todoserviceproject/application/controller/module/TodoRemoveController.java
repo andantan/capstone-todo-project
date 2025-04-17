@@ -1,8 +1,10 @@
 package org.zerock.todoserviceproject.application.controller.module;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,10 +27,10 @@ public class TodoRemoveController {
             description = "DELETE BY TNO"
     )
     @DeleteMapping(
-            value = "/remove/{tno}"
+            value = "/remove"
     )
     public Map<String, String> remove(
-            @PathVariable("tno") Long tno
+            @Valid @Param("tno") Long tno
     ) throws NoSuchElementException {
 
         return this.todoRemoveService.requestRemove(tno);
