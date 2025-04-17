@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zerock.todoserviceproject.application.controller.AbstractTodoController;
 import org.zerock.todoserviceproject.domain.service.module.query.TodoQueryService;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 
@@ -27,11 +28,11 @@ public final class TodoQueryController extends AbstractTodoController {
     @GetMapping(
             value = "/query/{tno}"
     )
-    public String find(
+    public Map<String, String> find(
             @PathVariable("tno") Long tno
     ) throws NoSuchElementException {
 
-        return this.todoQueryService.requestFindTodo(tno).toString();
+        return this.todoQueryService.requestFindTodo(tno);
     }
 
 }
