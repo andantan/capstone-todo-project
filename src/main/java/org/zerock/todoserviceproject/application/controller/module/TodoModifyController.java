@@ -29,10 +29,10 @@ public class TodoModifyController extends AbstractTodoController {
             description = "RequestBodyUpdateTodoDTO 형식 참조"
     )
     @PutMapping(
-            value = "/update",
+            value = "/modify",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Map<String, String> update(
+    public Map<String, String> modify(
             @Valid @RequestBody RequestModifyTodoDTO requestModifyTodoDTO,
             BindingResult requestBindingResult
     ) throws BindException {

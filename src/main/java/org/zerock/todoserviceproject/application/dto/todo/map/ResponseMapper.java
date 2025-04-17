@@ -1,10 +1,13 @@
 package org.zerock.todoserviceproject.application.dto.todo.map;
 
 
+import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Component;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseModifyTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseRegisterTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 
 import java.time.LocalDate;
@@ -14,9 +17,9 @@ import java.util.Map;
 @Component
 public class ResponseMapper {
 
-    public Map<String, String> getResponseMap(TodoEntity todoEntity) {
+    public Map<String, String> getResponseMap(TodoEntity todoEntity, String execution, String status) {
 
-        return this.getDefaultResponseMap(
+        Map<String, String> responseMap = this.getDefaultResponseMap(
                 todoEntity.getTno(),
                 todoEntity.getTitle(),
                 todoEntity.getWriter(),
@@ -24,34 +27,83 @@ public class ResponseMapper {
                 todoEntity.isComplete()
         );
 
+        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
+                execution, status
+        );
+
+        responseMap.putAll(conditionResponseMap);
+
+        return responseMap;
+
     }
 
-    public Map<String, String> getResponseMap(TodoDTO todoDTO) {
-
-        return this.getDefaultResponseMap(
+    public Map<String, String> getResponseMap(TodoDTO todoDTO, String execution, String status) {
+        Map<String, String> responseMap = this.getDefaultResponseMap(
                 todoDTO.getTno(),
                 todoDTO.getTitle(),
                 todoDTO.getWriter(),
                 todoDTO.getDueDate(),
                 todoDTO.isComplete()
         );
+
+        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
+                execution, status
+        );
+
+        responseMap.putAll(conditionResponseMap);
+
+        return responseMap;
     }
 
 
-    public Map<String, String> getResponseMap(ResponseQueryTodoDTO responseQueryTodoDTO) {
+    public Map<String, String> getResponseMap(
+            ResponseRegisterTodoDTO responseRegisterTodoDTO, String execution, String status
+    ) {
 
-        return this.getDefaultResponseMap(
+        Map<String, String> responseMap =  this.getDefaultResponseMap(
+                responseRegisterTodoDTO.getTno(),
+                responseRegisterTodoDTO.getTitle(),
+                responseRegisterTodoDTO.getWriter(),
+                responseRegisterTodoDTO.getDueDate(),
+                responseRegisterTodoDTO.isComplete()
+        );
+
+        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
+                execution, status
+        );
+
+        responseMap.putAll(conditionResponseMap);
+
+        return responseMap;
+    }
+
+
+    public Map<String, String> getResponseMap(
+            ResponseQueryTodoDTO responseQueryTodoDTO, String execution, String status
+    ) {
+
+        Map<String, String> responseMap =  this.getDefaultResponseMap(
                 null,
                 responseQueryTodoDTO.getTitle(),
                 responseQueryTodoDTO.getWriter(),
                 responseQueryTodoDTO.getDueDate(),
                 responseQueryTodoDTO.isComplete()
         );
+
+        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
+                execution, status
+        );
+
+        responseMap.putAll(conditionResponseMap);
+
+        return responseMap;
     }
 
 
-    public Map<String, String> getResponseMap(ResponseModifyTodoDTO responseModifyTodoDTO) {
-        Map<String, String> map = this.getDefaultResponseMap(
+    public Map<String, String> getResponseMap(
+            ResponseModifyTodoDTO responseModifyTodoDTO, String execution, String status
+    ) {
+        Map<String, String> responseMap = this.getDefaultResponseMap(
                 responseModifyTodoDTO.getTno(),
                 responseModifyTodoDTO.getTitle(),
                 responseModifyTodoDTO.getWriter(),
@@ -59,14 +111,24 @@ public class ResponseMapper {
                 responseModifyTodoDTO.isComplete()
         );
 
-        map.put("mod_date", responseModifyTodoDTO.getModDate().toString());
+        responseMap.put("mod_date", responseModifyTodoDTO.getModDate().toString());
 
-        return map;
+        Map<String, String> conditionResponseMap = this.getConditionResponseMap(
+                execution, status
+        );
+
+        responseMap.putAll(conditionResponseMap);
+
+        return responseMap;
     }
 
 
     private Map<String, String> getDefaultResponseMap(
-            Long tno, String title, String writer, LocalDate dueDate, boolean iscompleted
+            @Nullable Long tno,
+            @Nullable String title,
+            @Nullable String writer,
+            @Nullable LocalDate dueDate,
+            @NotNull boolean iscompleted
     ) {
         Map<String, String> map = new HashMap<>();
 
@@ -86,12 +148,32 @@ public class ResponseMapper {
             map.put("due_date", dueDate.toString());
         }
 
-        if (iscompleted) {
-            map.put("is_completed", "true");
-        }
-
+        map.put("complete", iscompleted ? "true" : "false");
 
         return map;
+    }
+
+    private Map<String, String> getConditionResponseMap(
+            @NotNull String execution,
+            @NotNull String status
+    ) {
+        Map<String, String> map = new HashMap<>();
+
+        map.put("execution", execution);
+        map.put("status", status);
+
+        return map;
+    }
+
+
+    public ResponseRegisterTodoDTO mapToRegisterResponseTodoDTO(TodoDTO todoDTO) {
+        return ResponseRegisterTodoDTO.builder()
+                .tno(todoDTO.getTno())
+                .title(todoDTO.getTitle())
+                .writer(todoDTO.getWriter())
+                .dueDate(todoDTO.getDueDate())
+                .complete(todoDTO.isComplete())
+                .build();
     }
 
 

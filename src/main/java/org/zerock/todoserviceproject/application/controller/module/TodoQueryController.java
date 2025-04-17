@@ -28,7 +28,7 @@ public final class TodoQueryController extends AbstractTodoController {
     @GetMapping(
             value = "/query/{tno}"
     )
-    public Map<String, String> find(
+    public Map<String, String> query(
             @PathVariable("tno") Long tno
     ) throws NoSuchElementException {
 

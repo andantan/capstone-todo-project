@@ -51,6 +51,6 @@ public class TodoModifyServiceImpl implements TodoModifyService {
                 this.modelMapper.map(resultEntity, TodoDTO.class)
         );
 
-        return this.responseMapper.getResponseMap(responseModifyTodoDTO);
+        return this.responseMapper.getResponseMap(responseModifyTodoDTO, "modify", "success");
     }
 }

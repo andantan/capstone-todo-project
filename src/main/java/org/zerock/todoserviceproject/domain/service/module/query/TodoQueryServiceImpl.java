@@ -31,6 +31,6 @@ public class TodoQueryServiceImpl implements TodoQueryService {
 
         ResponseQueryTodoDTO responseQueryTodoDTO = this.responseMapper.mapToQueryResponseTodoDTO(resultTodoDTO);
 
-        return responseMapper.getResponseMap(responseQueryTodoDTO);
+        return responseMapper.getResponseMap(responseQueryTodoDTO, "query", "success");
     }
 }
