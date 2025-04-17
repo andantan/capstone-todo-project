@@ -12,6 +12,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseQueryTodoDTO {
+    private Long tno;
+
     private String title;
     private String writer;
 
