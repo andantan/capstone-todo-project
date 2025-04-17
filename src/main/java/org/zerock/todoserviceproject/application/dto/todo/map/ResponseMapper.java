@@ -3,6 +3,8 @@ package org.zerock.todoserviceproject.application.dto.todo.map;
 
 import org.springframework.stereotype.Component;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseModifyTodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 
 import java.time.LocalDate;
@@ -36,17 +38,80 @@ public class ResponseMapper {
     }
 
 
+    public Map<String, String> getResponseMap(ResponseQueryTodoDTO responseQueryTodoDTO) {
+
+        return this.getDefaultResponseMap(
+                null,
+                responseQueryTodoDTO.getTitle(),
+                responseQueryTodoDTO.getWriter(),
+                responseQueryTodoDTO.getDueDate(),
+                responseQueryTodoDTO.isComplete()
+        );
+    }
+
+
+    public Map<String, String> getResponseMap(ResponseModifyTodoDTO responseModifyTodoDTO) {
+        Map<String, String> map = this.getDefaultResponseMap(
+                responseModifyTodoDTO.getTno(),
+                responseModifyTodoDTO.getTitle(),
+                responseModifyTodoDTO.getWriter(),
+                responseModifyTodoDTO.getDueDate(),
+                responseModifyTodoDTO.isComplete()
+        );
+
+        map.put("mod_date", responseModifyTodoDTO.getModDate().toString());
+
+        return map;
+    }
+
+
     private Map<String, String> getDefaultResponseMap(
             Long tno, String title, String writer, LocalDate dueDate, boolean iscompleted
     ) {
         Map<String, String> map = new HashMap<>();
 
-        map.put("tno", String.valueOf(tno));
-        map.put("title", title);
-        map.put("writer", writer);
-        map.put("dueDate", dueDate.toString());
-        map.put("iscompleted", String.valueOf(iscompleted));
+        if (tno != null) {
+            map.put("tno", String.valueOf(tno));
+        }
+
+        if (title != null) {
+            map.put("title", title);
+        }
+
+        if (writer != null) {
+            map.put("writer", writer);
+        }
+
+        if (dueDate != null) {
+            map.put("due_date", dueDate.toString());
+        }
+
+        if (iscompleted) {
+            map.put("is_completed", "true");
+        }
+
 
         return map;
+    }
+
+
+    public ResponseQueryTodoDTO mapToQueryResponseTodoDTO(TodoDTO todoDTO) {
+        return ResponseQueryTodoDTO.builder()
+                .title(todoDTO.getTitle())
+                .writer(todoDTO.getWriter())
+                .dueDate(todoDTO.getDueDate())
+                .complete(todoDTO.isComplete())
+                .build();
+    }
+
+
+    public ResponseModifyTodoDTO mapToModifyResponseTodoDTO(TodoDTO todoDTO) {
+        return ResponseModifyTodoDTO.builder()
+                .title(todoDTO.getTitle())
+                .writer(todoDTO.getWriter())
+                .dueDate(todoDTO.getDueDate())
+                .complete(todoDTO.isComplete())
+                .modDate(todoDTO.getModDate())
+                .build();
     }
 }
