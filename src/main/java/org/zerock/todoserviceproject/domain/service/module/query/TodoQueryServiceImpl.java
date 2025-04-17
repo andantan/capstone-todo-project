@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
+import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
 import org.zerock.todoserviceproject.domain.repository.TodoRepository;
 
 import java.util.Map;
@@ -28,6 +29,8 @@ public class TodoQueryServiceImpl implements TodoQueryService {
                 .map(todo -> modelMapper.map(todo, TodoDTO.class))  // If exist then mapping
                 .orElseThrow(() -> new NoSuchElementException("Todo tuple not found: " + tno)); // else throw exception
 
-        return responseMapper.getResponseMap(resultTodoDTO);
+        ResponseQueryTodoDTO responseQueryTodoDTO = this.responseMapper.mapToQueryResponseTodoDTO(resultTodoDTO);
+
+        return responseMapper.getResponseMap(responseQueryTodoDTO);
     }
 }
