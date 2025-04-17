@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.zerock.todoserviceproject.application.todo.TodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 import org.zerock.todoserviceproject.domain.repository.TodoRepository;
 import org.zerock.todoserviceproject.domain.service.impl.TodoService;
 

@@ -1,9 +1,7 @@
 package org.zerock.todoserviceproject.domain.service.impl;
 
-import org.zerock.todoserviceproject.application.todo.TodoDTO;
 
-import java.util.Map;
-
+import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 
 public interface TodoService {
     // +-+-+-+-+-+-+-+

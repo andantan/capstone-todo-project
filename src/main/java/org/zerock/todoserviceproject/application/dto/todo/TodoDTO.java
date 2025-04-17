@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.application.todo;
+package org.zerock.todoserviceproject.application.dto.todo.projection;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
