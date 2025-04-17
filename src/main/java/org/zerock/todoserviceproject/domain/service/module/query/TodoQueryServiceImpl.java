@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.domain.service;
+package org.zerock.todoserviceproject.domain.service.module.query;
 
 
 import lombok.RequiredArgsConstructor;
@@ -7,14 +7,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 import org.zerock.todoserviceproject.domain.repository.TodoRepository;
-import org.zerock.todoserviceproject.domain.service.impl.TodoService;
 
 import java.util.NoSuchElementException;
 
 @Service
 @Log4j2
 @RequiredArgsConstructor
-public class TodoServiceImpl implements TodoService {
+public class TodoQueryServiceImpl implements TodoQueryService {
 
     private final TodoRepository todoRepository;
     private final ModelMapper modelMapper;

@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.application.dto.todo.projection;
+package org.zerock.todoserviceproject.application.dto.todo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
 public class TodoDTO {
-    @ToString.Exclude private Long tno;
+    private Long tno;
 
     private String title;
     private String writer;
