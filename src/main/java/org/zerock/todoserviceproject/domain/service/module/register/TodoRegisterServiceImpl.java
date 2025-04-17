@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.map.RequestMapper;
 import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestRegisterTodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseRegisterTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 import org.zerock.todoserviceproject.domain.repository.TodoRepository;
 
@@ -26,13 +28,13 @@ public class TodoRegisterServiceImpl implements TodoRegisterService {
 
     @Override
     public Map<String, String> requestRegister(RequestRegisterTodoDTO requestRegisterTodoDTO) {
-        TodoEntity resultEntity = this.todoRepository.save(
-                this.modelMapper.map(
-                        requestMapper.mapToTodoDTO(requestRegisterTodoDTO),
-                        TodoEntity.class
-                )
-        );
+        TodoDTO registerTodoDTO = requestMapper.mapToTodoDTO(requestRegisterTodoDTO);
 
-        return responseMapper.getResponseMap(resultEntity);
+        this.todoRepository.save(this.modelMapper.map(registerTodoDTO, TodoEntity.class));
+
+        ResponseRegisterTodoDTO responseRegisterTodoDTO = this.responseMapper
+                .mapToRegisterResponseTodoDTO(registerTodoDTO);
+
+        return responseMapper.getResponseMap(responseRegisterTodoDTO, "register", "success");
     }
 }
