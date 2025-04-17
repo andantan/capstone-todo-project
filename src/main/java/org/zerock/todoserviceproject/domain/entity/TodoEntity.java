@@ -12,7 +12,6 @@ import org.zerock.todoserviceproject.domain.entity.base.BaseTImeEntity;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Table(name = "tbl_todo_api")
 public class TodoEntity extends BaseTImeEntity {
     @Id
