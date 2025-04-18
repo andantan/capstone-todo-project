@@ -1,10 +1,14 @@
 package org.zerock.todoserviceproject.domain.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
 import org.zerock.todoserviceproject.domain.entity.base.BaseTImeEntity;
+import org.zerock.todoserviceproject.domain.entity.converter.LocalDateTimeConverter;
 
 
 @Entity
@@ -12,7 +16,7 @@ import org.zerock.todoserviceproject.domain.entity.base.BaseTImeEntity;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tbl_todo_api")
+@Table(name="todo_tbl")
 public class TodoEntity extends BaseTImeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,19 +33,37 @@ public class TodoEntity extends BaseTImeEntity {
 
 
     @Column(
-            name = "due_date",
+            name = "date",
             nullable = false
     )
-    private LocalDate dueDate;
+    private LocalDate date;
 
 
     @Column(
             name = "writer",
             nullable = false,
             length = 50,
-            columnDefinition = "VARCHAR(50) DEFAULT 'ANONYMOUS'"
+            columnDefinition = "VARCHAR(64) DEFAULT 'ANONYMOUS'"
     )
     private String writer;
+
+
+    @Column(
+            name = "`from_time`",
+            nullable = false,
+            columnDefinition = "VARCHAR(16)"
+    )
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime from;
+
+
+    @Column(
+            name = "to_time",
+            nullable = false,
+            columnDefinition = "VARCHAR(16)"
+    )
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime to;
 
 
     @Column(
@@ -51,9 +73,5 @@ public class TodoEntity extends BaseTImeEntity {
     )
     private boolean complete;
 
-
-    public void changeTitle(String title) { this.title = title; }
-    public void changeDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
-    public void changeComplete(boolean complete) { this.complete = complete; }
 
 }

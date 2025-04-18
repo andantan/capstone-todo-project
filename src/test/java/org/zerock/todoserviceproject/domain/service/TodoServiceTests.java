@@ -17,13 +17,6 @@ public class TodoServiceTests {
 
     @Test
     public void todoServiceTestQueryById() {
-        log.info(
-                "TodoServiceTests::todoServiceTestQueryById -> TodoDTO(tno=245) : {}",
-                this.todoQueryService.requestQueryTodo(245L)
-        );
-        log.info(
-                "TodoServiceTests::todoServiceTestQueryById -> TodoDTO(tno=425) : {}",
-                this.todoQueryService.requestQueryTodo(425L)
-        );
+
     }
 }

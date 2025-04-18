@@ -30,11 +30,13 @@ public class TodoRegisterServiceImpl implements TodoRegisterService {
     public Map<String, String> requestRegister(RequestRegisterTodoDTO requestRegisterTodoDTO) {
         TodoDTO registerTodoDTO = requestMapper.mapToTodoDTO(requestRegisterTodoDTO);
 
-        this.todoRepository.save(this.modelMapper.map(registerTodoDTO, TodoEntity.class));
+        TodoEntity result = this.todoRepository.save(this.modelMapper.map(registerTodoDTO, TodoEntity.class));
 
         ResponseRegisterTodoDTO responseRegisterTodoDTO = this.responseMapper
                 .mapToRegisterResponseTodoDTO(registerTodoDTO);
 
-        return responseMapper.getResponseMap(responseRegisterTodoDTO, "register", "success");
+        responseRegisterTodoDTO.setTno(result.getTno());
+
+        return responseMapper.getResponseMap(responseRegisterTodoDTO);
     }
 }

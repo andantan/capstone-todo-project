@@ -26,7 +26,7 @@ public class TodoModifyServiceImpl implements TodoModifyService {
     private final ModelMapper modelMapper;
 
     @Override
-    public Map<String, String> requestUpdateTodo(RequestModifyTodoDTO requestModifyTodoDTO) {
+    public Map<String, String> requestModify(RequestModifyTodoDTO requestModifyTodoDTO) {
         TodoDTO targetTodoDTO = this.todoRepository.findById(requestModifyTodoDTO.getTno())   // Query
                 .map(todo -> modelMapper.map(todo, TodoDTO.class))  // If exist then mapping
                 .orElseThrow(() -> new NoSuchElementException("Todo tuple not found: " + requestModifyTodoDTO.getTno())); // else throw exception
@@ -35,13 +35,20 @@ public class TodoModifyServiceImpl implements TodoModifyService {
             targetTodoDTO.changeTitle(requestModifyTodoDTO.getTitle());
         }
 
-        if (requestModifyTodoDTO.getDueDate() != null) {
-            targetTodoDTO.changeDueDate(requestModifyTodoDTO.getDueDate());
+        if (requestModifyTodoDTO.getDate() != null) {
+            targetTodoDTO.changeDate(requestModifyTodoDTO.getDate());
         }
 
-        if (requestModifyTodoDTO.isComplete()) {
-            targetTodoDTO.changeComplete(true);
+        if (requestModifyTodoDTO.getFrom() != null) {
+            targetTodoDTO.changeFrom(requestModifyTodoDTO.getFrom());
         }
+
+        if (requestModifyTodoDTO.getTo() != null) {
+            targetTodoDTO.changeTo(requestModifyTodoDTO.getTo());
+        }
+
+        targetTodoDTO.changeComplete(targetTodoDTO.isComplete());
+
 
         TodoEntity resultEntity = this.todoRepository.save(
                 this.modelMapper.map(targetTodoDTO, TodoEntity.class)
@@ -51,6 +58,6 @@ public class TodoModifyServiceImpl implements TodoModifyService {
                 this.modelMapper.map(resultEntity, TodoDTO.class)
         );
 
-        return this.responseMapper.getResponseMap(responseModifyTodoDTO, "modify", "success");
+        return this.responseMapper.getResponseMap(responseModifyTodoDTO);
     }
 }

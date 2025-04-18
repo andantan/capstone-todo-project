@@ -23,7 +23,9 @@ public class QTodoEntity extends EntityPathBase<TodoEntity> {
 
     public final BooleanPath complete = createBoolean("complete");
 
-    public final DatePath<java.time.LocalDate> dueDate = createDate("dueDate", java.time.LocalDate.class);
+    public final DatePath<java.time.LocalDate> date = createDate("date", java.time.LocalDate.class);
+
+    public final DateTimePath<java.time.LocalDateTime> from = createDateTime("from", java.time.LocalDateTime.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
@@ -34,6 +36,8 @@ public class QTodoEntity extends EntityPathBase<TodoEntity> {
     public final StringPath title = createString("title");
 
     public final NumberPath<Long> tno = createNumber("tno", Long.class);
+
+    public final DateTimePath<java.time.LocalDateTime> to = createDateTime("to", java.time.LocalDateTime.class);
 
     public final StringPath writer = createString("writer");
 

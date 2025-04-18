@@ -1,10 +1,11 @@
 package org.zerock.todoserviceproject.domain.repository.extension;
 
-import org.springframework.data.domain.Page;
-import org.zerock.todoserviceproject.application.dto.todo.page.RequestPageDTO;
-import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestQueryTodoDTO;
+import org.zerock.todoserviceproject.domain.entity.TodoEntity;
+
+import java.util.List;
 
 public interface TodoRepositoryExtension {
 
-    Page<ResponseQueryTodoDTO> requestFindAll(RequestPageDTO requestPageDTO);
+    List<TodoEntity> findListByDate(RequestQueryTodoDTO requestQueryTodoDTO);
 }

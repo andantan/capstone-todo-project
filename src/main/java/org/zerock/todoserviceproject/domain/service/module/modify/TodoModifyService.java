@@ -10,5 +10,5 @@ import java.util.Map;
 // +-+-+-+-+-+-+-+
 public interface TodoModifyService {
 
-    Map<String, String> requestUpdateTodo(RequestModifyTodoDTO requestModifyTodoDTO);
+    Map<String, String> requestModify(RequestModifyTodoDTO requestModifyTodoDTO);
 }
