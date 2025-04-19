@@ -1,7 +1,6 @@
 package org.zerock.todolist.repository;
 
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.zerock.todolist.domain.entity.User;
 

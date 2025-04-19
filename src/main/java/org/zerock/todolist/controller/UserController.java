@@ -1,18 +1,24 @@
 package org.zerock.todolist.controller;
 
-import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated; 
-import org.springframework.web.bind.annotation.GetMapping; 
-import org.springframework.web.bind.annotation.PostMapping; 
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.zerock.todolist.dto.LoginRequest;
-import org.zerock.todolist.dto.PasswordChangeRequest;
+import java.util.Optional;
 import org.zerock.todolist.dto.SignUpRequest;
+import org.zerock.todolist.dto.LoginRequest;
+
+
+import org.zerock.todolist.dto.PasswordVerificationRequest; 
+import org.zerock.todolist.dto.PasswordVerificationResponse; 
+import org.zerock.todolist.dto.PasswordResetRequest; 
+
 import org.zerock.todolist.service.UserService;
 
 @RestController // REST 컨트롤러
@@ -69,27 +75,8 @@ public class UserController {
             return new ResponseEntity<>("fault", HttpStatus.CONFLICT); // 409 Conflict
         }
     }
-
-   /**
-     * 비밀번호 변경 API 엔드포인트 (아이디, 이름, 전화번호 확인 후 변경)
-     * POST /auth/change-password
-     * 요청 본문 (JSON): PasswordChangeRequest DTO 형식
-     * @param request 비밀번호 변경 요청 정보 (요청 본문에서 받음)
-     * @return 비밀번호 변경 성공 시 "success" (200 OK), 사용자 정보 불일치 시 "user not found" (404 Not Found)
-     */
-    @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(@RequestBody PasswordChangeRequest request) {
-        boolean isChanged = userService.changePassword(request);
-
-        if (isChanged) {
-            // 비밀번호 변경 성공
-            return new ResponseEntity<>("success", HttpStatus.OK); // 200 OK
-        } else {
-            // 사용자 정보 불일치
-            return new ResponseEntity<>("user not found", HttpStatus.NOT_FOUND); // 404 Not Found 상태 코드 사용
-        }
-    }
-
+ 
+   
     /**
      * 로그인 API 엔드포인트
      * POST /auth/login
@@ -113,4 +100,51 @@ public class UserController {
              return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials"); 
         }
     }
+ /**
+     * 1단계: 비밀번호 변경을 위한 사용자 본인 확인 및 임시 토큰 발급 API
+     * POST /auth/verify-user-for-password-change
+     * 요청 본문 (JSON): PasswordVerificationRequest DTO 형식
+     * @param request 본인 확인 요청 정보 (아이디, 이름, 전화번호)
+     * @return 본인 확인 성공 시 토큰을 담은 PasswordVerificationResponse (200 OK),
+     * 불일치 시 오류 응답 (404 Not Found)
+     */
+    @PostMapping("/verify-user-for-password-change")
+    @Validated // PasswordVerificationRequest DTO 유효성 검사
+    public ResponseEntity<?> verifyUserForPasswordChange(@RequestBody PasswordVerificationRequest request) {
+        // 서비스 메서드는 성공 시 Optional<PasswordVerificationResponse> 반환
+        Optional<PasswordVerificationResponse> responseOptional = userService.verifyUserForPasswordChange(request);
+
+        if (responseOptional.isPresent()) {
+            // 본인 확인 성공, 토큰 포함된 응답 DTO 반환
+            return new ResponseEntity<>(responseOptional.get(), HttpStatus.OK); // 200 OK
+        } else {
+            // 사용자 정보 불일치 또는 찾을 수 없음
+           
+             return new ResponseEntity<>("user not found", HttpStatus.NOT_FOUND); // 404 Not Found
+        }
+    }
+
+
+    /**
+     * 2단계: 임시 토큰과 새로운 비밀번호를 받아 비밀번호 변경 API
+     * POST /auth/reset-password
+     * 요청 본문 (JSON): PasswordResetRequest DTO 형식
+     * @param request 비밀번호 변경 요청 정보 (토큰, 새로운 비밀번호)
+     * @return 비밀번호 변경 성공 시 "password changed" (200 OK), 실패 시 "failed" (400 Bad Request 등)
+     */
+    @PostMapping("/reset-password")
+    @Validated 
+    public ResponseEntity<String> resetPassword(@RequestBody PasswordResetRequest request) {
+        // 서비스 메서드는 토큰 검증 및 비밀번호 변경 후 성공 여부 반환
+        boolean isReset = userService.resetPassword(request);
+
+        if (isReset) {
+            return new ResponseEntity<>("password changed", HttpStatus.OK); // 200 OK
+        } else {
+            // 토큰 유효하지 않음, 만료, 사용됨 또는 사용자 미발견 등 서비스 로직 내 실패
+             return new ResponseEntity<>("failed", HttpStatus.BAD_REQUEST); // 400 Bad Request
+        }
+    }
+
+
 }

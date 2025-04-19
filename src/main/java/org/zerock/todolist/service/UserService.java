@@ -1,15 +1,21 @@
 package org.zerock.todolist.service;
 
 import org.zerock.todolist.domain.entity.User;
+import org.zerock.todolist.domain.entity.PasswordResetToken; 
 import org.zerock.todolist.dto.SignUpRequest;
-import org.zerock.todolist.dto.PasswordChangeRequest; 
+import org.zerock.todolist.dto.PasswordVerificationRequest; 
+import org.zerock.todolist.dto.PasswordVerificationResponse; 
+import org.zerock.todolist.dto.PasswordResetRequest; 
 import org.zerock.todolist.repository.UserRepository;
+import org.zerock.todolist.repository.PasswordResetTokenRepository; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional; 
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime; 
 import java.util.Optional;
+import java.util.UUID; 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +27,17 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
+    // TODO: 토큰 만료 시간 설정 (30분)
+    private static final int TOKEN_EXPIRY_TIME_MINUTES = 30;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                   PasswordResetTokenRepository passwordResetTokenRepository) { 
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.passwordResetTokenRepository = passwordResetTokenRepository; 
+}
 
     /**
      * 아이디(username)의 중복 여부를 확인합니다.
@@ -75,43 +86,7 @@ public class UserService {
         return true; // 등록 성공
     }
 
-     // 비밀번호 변경 로직 구현 시작
-    /**
-     * 아이디, 이름, 전화번호가 일치하는 경우 비밀번호를 변경합니다.
-     * @param request 비밀번호 변경 요청 정보 (아이디, 이름, 전화번호, 새로운 비밀번호)
-     * @return 비밀번호 변경 성공 시 true, 사용자 정보 불일치 시 false
-     */
     
-    public boolean changePassword(PasswordChangeRequest request) {
-        log.info("Attempting to change password for user: {}", request.getUsername());
-
-        // 아이디, 이름, 전화번호가 모두 일치하는 사용자를 찾습니다.
-        Optional<User> userOptional = userRepository.findByUsernameAndNameAndPhoneNumber(
-                request.getUsername(),
-                request.getName(),
-                request.getPhoneNumber()
-        );
-
-        // 일치하는 사용자가 없다면 비밀번호 변경 실패
-        if (userOptional.isEmpty()) {
-            log.warn("Password change failed: User not found or info mismatch for username {}", request.getUsername());
-            return false;
-        }
-
-        // 일치하는 사용자가 있다면 비밀번호 변경 진행
-        User user = userOptional.get();
-
-        // 새로운 비밀번호 암호화
-        String encodedNewPassword = passwordEncoder.encode(request.getNewPassword());
-
-        // 사용자의 비밀번호 업데이트
-        user.setPassword(encodedNewPassword);
-
-        log.info("Password changed successfully for username {}", request.getUsername());
-        return true; // 비밀번호 변경 성공
-    } // 비밀번호 변경 로직 구현 끝
-
-
     /**
      * 사용자 자격 증명(아이디, 비밀번호)을 검증합니다. (로그인 로직의 일부)
      * @param username 아이디
@@ -143,6 +118,82 @@ public class UserService {
         }
 
         return passwordMatches;
+    }
+    /**
+     * 1단계: 비밀번호 변경을 위한 사용자 본인 확인 및 임시 토큰 발급
+     * 아이디, 이름, 전화번호가 일치하는 사용자를 확인하고, 일치하면 토큰을 생성/저장 후 반환합니다.
+     * @param request 본인 확인 요청 정보 (아이디, 이름, 전화번호)
+     * @return 사용자 정보 일치 시 토큰을 담은 Optional<PasswordVerificationResponse>, 불일치 시 Optional.empty()
+     */
+    @Transactional 
+    public Optional<PasswordVerificationResponse> verifyUserForPasswordChange(PasswordVerificationRequest request) {
+        log.info("Attempting 1-step verification for password change for user: {}", request.getUsername());
+
+        // 아이디, 이름, 전화번호가 모두 일치하는 사용자를 찾습니다.
+        Optional<User> userOptional = userRepository.findByUsernameAndNameAndPhoneNumber(
+                request.getUsername(),
+                request.getName(),
+                request.getPhoneNumber()
+        );
+
+        // 사용자 정보 일치 시
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+
+            // 임시 토큰 생성
+            String token = UUID.randomUUID().toString();
+            // 토큰 만료 시간 설정 (현재 시간 + 만료 시간)
+            LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(TOKEN_EXPIRY_TIME_MINUTES);
+
+            // PasswordResetToken 엔티티 생성 및 저장
+            PasswordResetToken passwordResetToken = new PasswordResetToken(token, user, expiryDate);
+            passwordResetTokenRepository.save(passwordResetToken);
+
+            log.info("1-step verification successful. Token generated for user: {}", request.getUsername());
+            // 클라이언트에게 반환할 응답 DTO 생성
+            return Optional.of(new PasswordVerificationResponse(token));
+        } else {
+            // 사용자 정보 불일치 시
+            log.warn("1-step verification failed: User not found or info mismatch for username: {}", request.getUsername());
+            return Optional.empty(); // 빈 Optional 반환
+        }
+    }
+
+
+    /**
+     * 2단계: 임시 토큰 검증 후 비밀번호 변경
+     * 제공된 토큰의 유효성을 검증하고, 유효하면 연결된 사용자의 비밀번호를 업데이트합니다.
+     * @param request 비밀번호 변경 요청 정보 (토큰, 새로운 비밀번호)
+     * @return 비밀번호 변경 성공 시 true, 토큰 유효하지 않거나 사용자 미발견 시 false
+     */
+    @Transactional 
+    public boolean resetPassword(PasswordResetRequest request) {
+        log.info("Attempting 2-step password reset using token");
+
+        // 1. 제공된 토큰으로 PasswordResetToken 정보를 찾습니다.
+        Optional<PasswordResetToken> tokenOptional = passwordResetTokenRepository.findByToken(request.getToken());
+
+        // 토큰 정보가 존재하지 않거나 유효하지 않으면 실패
+        if (tokenOptional.isEmpty() || !tokenOptional.get().isValid()) {
+            log.warn("2-step password reset failed: Invalid or expired token provided.");
+            return false;
+        }
+
+        PasswordResetToken passwordResetToken = tokenOptional.get();
+        User user = passwordResetToken.getUser(); // 토큰에 연결된 사용자 가져오기
+
+        // 2. 새로운 비밀번호 암호화 및 사용자 비밀번호 업데이트
+        String encodedNewPassword = passwordEncoder.encode(request.getNewPassword());
+        user.setPassword(encodedNewPassword); 
+
+        // 3. 사용된 토큰을 무효화합니다.
+        passwordResetToken.setUsed(true);
+        passwordResetTokenRepository.save(passwordResetToken); // 무효화 상태 저장
+
+        log.info("2-step password reset successful for user: {}", user.getUsername());
+
+        return true; // 비밀번호 변경 성공
     }
 
 

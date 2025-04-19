@@ -32,10 +32,7 @@ public class SecurityConfig {
                 // TODO: 나중에 인증/인가 필요한 경로는 authenticated() 등으로 변경해야 합니다.
                 .anyRequest().permitAll()
             );
-            // 폼 로그인, HTTP Basic 등 다른 기본 보안 설정 비활성화 (API 서버에 맞게 조정)
-            // 필요에 따라 추가적인 보안 설정을 여기에 합니다.
-            // .formLogin(AbstractHttpConfigurer::disable)
-            // .httpBasic(AbstractHttpConfigurer::disable);
+            
 
 
         return http.build();
