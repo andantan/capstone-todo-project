@@ -46,7 +46,7 @@ public class TodoModifyServiceImpl implements TodoModifyService {
             targetTodoDTO.changeTo(requestModifyTodoDTO.getTo());
         }
 
-        targetTodoDTO.changeComplete(targetTodoDTO.isComplete());
+        targetTodoDTO.changeComplete(requestModifyTodoDTO.isComplete());
 
 
         TodoEntity resultEntity = this.todoRepository.save(
