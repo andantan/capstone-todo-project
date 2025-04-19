@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.domain.repository.extension;
+package org.zerock.todoserviceproject.domain.repository.extension.query;
 
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -9,10 +9,10 @@ import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 import java.util.List;
 
 
-public class TodoRepositoryExtensionImpl extends QuerydslRepositorySupport
-        implements TodoRepositoryExtension {
+public class TodoRepositoryQueryExtensionImpl extends QuerydslRepositorySupport
+        implements TodoRepositoryQueryExtension {
 
-    public TodoRepositoryExtensionImpl() {
+    public TodoRepositoryQueryExtensionImpl() {
         super(TodoEntity.class);
     }
 
