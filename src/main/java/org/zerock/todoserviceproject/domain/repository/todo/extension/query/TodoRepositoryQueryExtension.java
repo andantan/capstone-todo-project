@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.domain.repository.extension.query;
+package org.zerock.todoserviceproject.domain.repository.todo.extension.query;
 
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestQueryTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;

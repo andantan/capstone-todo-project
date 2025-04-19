@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
+import org.zerock.todoserviceproject.domain.repository.todo.TodoRepository;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;

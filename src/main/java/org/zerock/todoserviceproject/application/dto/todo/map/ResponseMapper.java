@@ -3,6 +3,8 @@ package org.zerock.todoserviceproject.application.dto.todo.map;
 
 import org.springframework.stereotype.Component;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.archive.TodoArchiveDTO;
+import org.zerock.todoserviceproject.application.dto.todo.archive.projection.response.ResponseQueryTodoArchiveDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseModifyTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseRegisterTodoDTO;
@@ -45,6 +47,22 @@ public class ResponseMapper {
     }
 
 
+    public Map<String, String> getResponseMap(ResponseQueryTodoArchiveDTO responseQueryTodoArchiveDTO) {
+
+        Map<String, String> responseMap = new HashMap<>();
+
+        responseMap.put("writer", responseQueryTodoArchiveDTO.getWriter());
+        responseMap.put("date", responseQueryTodoArchiveDTO.getDate().toString());
+        responseMap.put("tno", responseQueryTodoArchiveDTO.getTno().toString());
+        responseMap.put("from", responseQueryTodoArchiveDTO.getFrom().toString().replace("T", " "));
+        responseMap.put("to", responseQueryTodoArchiveDTO.getTo().toString().replace("T", " "));
+        responseMap.put("title", responseQueryTodoArchiveDTO.getTitle());
+        responseMap.put("complete", responseQueryTodoArchiveDTO.isComplete() ? "true" : "false");
+
+        return responseMap;
+    }
+
+
 
     public Map<String, String> getResponseMap(ResponseModifyTodoDTO responseModifyTodoDTO) {
         Map<String, String> responseMap = new HashMap<>();
@@ -77,6 +95,19 @@ public class ResponseMapper {
                 .from(todoDTO.getFrom())
                 .to(todoDTO.getTo())
                 .complete(todoDTO.isComplete())
+                .build();
+    }
+
+
+    public ResponseQueryTodoArchiveDTO mapToQueryResponseTodoArchiveDTO(TodoArchiveDTO todoArchiveDTO) {
+        return ResponseQueryTodoArchiveDTO.builder()
+                .tno(todoArchiveDTO.getTno())
+                .writer(todoArchiveDTO.getWriter())
+                .title(todoArchiveDTO.getTitle())
+                .date(todoArchiveDTO.getDate())
+                .from(todoArchiveDTO.getFrom())
+                .to(todoArchiveDTO.getTo())
+                .complete(todoArchiveDTO.isComplete())
                 .build();
     }
 

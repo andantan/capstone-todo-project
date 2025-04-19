@@ -10,7 +10,7 @@ import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestModifyTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseModifyTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
-import org.zerock.todoserviceproject.domain.repository.TodoRepository;
+import org.zerock.todoserviceproject.domain.repository.todo.TodoRepository;
 
 import java.util.Map;
 import java.util.NoSuchElementException;

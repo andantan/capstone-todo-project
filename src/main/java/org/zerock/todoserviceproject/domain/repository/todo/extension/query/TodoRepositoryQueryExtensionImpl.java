@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.domain.repository.extension.query;
+package org.zerock.todoserviceproject.domain.repository.todo.extension.query;
 
 import com.querydsl.jpa.JPQLQuery;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;

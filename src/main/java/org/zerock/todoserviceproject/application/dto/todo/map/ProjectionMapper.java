@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
-import org.zerock.todoserviceproject.application.dto.todo.archive.ArchiveTodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.archive.TodoArchiveDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
-import org.zerock.todoserviceproject.domain.entity.archive.ArchiveTodoEntity;
+import org.zerock.todoserviceproject.domain.entity.archive.TodoArchiveEntity;
 
 @Component
 @RequiredArgsConstructor
@@ -19,21 +19,21 @@ public class ProjectionMapper {
         return this.modelMapper.map(todoEntity, TodoDTO.class);
     }
 
-    public ArchiveTodoDTO mapToDTO(ArchiveTodoEntity archiveTodoEntity) {
-        return this.modelMapper.map(archiveTodoEntity, ArchiveTodoDTO.class);
+    public TodoArchiveDTO mapToDTO(TodoArchiveEntity archiveTodoEntity) {
+        return this.modelMapper.map(archiveTodoEntity, TodoArchiveDTO.class);
     }
 
     public TodoEntity mapToEntity(TodoDTO todoDTO) {
         return this.modelMapper.map(todoDTO, TodoEntity.class);
     }
 
-    public ArchiveTodoEntity mapToEntity(ArchiveTodoDTO archiveTodoDTO) {
-        return this.modelMapper.map(archiveTodoDTO, ArchiveTodoEntity.class);
+    public TodoArchiveEntity mapToEntity(TodoArchiveDTO archiveTodoDTO) {
+        return this.modelMapper.map(archiveTodoDTO, TodoArchiveEntity.class);
     }
 
-    public ArchiveTodoDTO convertToArchive(TodoDTO targetTodoDTO, Integer delta) {
+    public TodoArchiveDTO convertToArchive(TodoDTO targetTodoDTO, Integer delta) {
 
-        return ArchiveTodoDTO.builder()
+        return TodoArchiveDTO.builder()
                 .tno(targetTodoDTO.getTno())
                 .writer(targetTodoDTO.getWriter())
                 .title(targetTodoDTO.getTitle())

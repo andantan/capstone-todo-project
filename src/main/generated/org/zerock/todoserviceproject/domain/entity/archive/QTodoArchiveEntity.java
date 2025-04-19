@@ -10,14 +10,14 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QArchiveTodoEntity is a Querydsl query type for ArchiveTodoEntity
+ * QTodoArchiveEntity is a Querydsl query type for TodoArchiveEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QArchiveTodoEntity extends EntityPathBase<ArchiveTodoEntity> {
+public class QTodoArchiveEntity extends EntityPathBase<TodoArchiveEntity> {
 
-    private static final long serialVersionUID = -2060246226L;
+    private static final long serialVersionUID = -1342896734L;
 
-    public static final QArchiveTodoEntity archiveTodoEntity = new QArchiveTodoEntity("archiveTodoEntity");
+    public static final QTodoArchiveEntity todoArchiveEntity = new QTodoArchiveEntity("todoArchiveEntity");
 
     public final org.zerock.todoserviceproject.domain.entity.base.QBaseArchiveTimeEntity _super = new org.zerock.todoserviceproject.domain.entity.base.QBaseArchiveTimeEntity(this);
 
@@ -44,16 +44,16 @@ public class QArchiveTodoEntity extends EntityPathBase<ArchiveTodoEntity> {
 
     public final StringPath writer = createString("writer");
 
-    public QArchiveTodoEntity(String variable) {
-        super(ArchiveTodoEntity.class, forVariable(variable));
+    public QTodoArchiveEntity(String variable) {
+        super(TodoArchiveEntity.class, forVariable(variable));
     }
 
-    public QArchiveTodoEntity(Path<? extends ArchiveTodoEntity> path) {
+    public QTodoArchiveEntity(Path<? extends TodoArchiveEntity> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QArchiveTodoEntity(PathMetadata metadata) {
-        super(ArchiveTodoEntity.class, metadata);
+    public QTodoArchiveEntity(PathMetadata metadata) {
+        super(TodoArchiveEntity.class, metadata);
     }
 
 }

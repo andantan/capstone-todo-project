@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="todo_archive_tbl")
-public class ArchiveTodoEntity extends BaseArchiveTimeEntity {
+public class TodoArchiveEntity extends BaseArchiveTimeEntity {
     @Id
     private Long tno;
 

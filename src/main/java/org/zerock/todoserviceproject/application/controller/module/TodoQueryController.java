@@ -29,9 +29,9 @@ public final class TodoQueryController extends AbstractTodoController {
             description = "ResponseQueryTodoDTO 형식에 따름"
     )
     @GetMapping(
-            value = "/query"
+            value = "/query/list"
     )
-    public Map<String, Object> query(
+    public Map<String, Object> queryTodoList(
             @NotNull @Param("writer") String writer,
             @NotNull @Param("date") LocalDate date
     ) throws NoSuchElementException {
@@ -39,5 +39,20 @@ public final class TodoQueryController extends AbstractTodoController {
         return this.todoQueryService.requestQueryTodoList(
                 RequestQueryTodoDTO.builder().writer(writer).date(date).build()
         );
+    }
+
+
+    @Operation(
+            summary = "삭제된 Todo 조회",
+            description = "ResponseQueryTodoArchiveDTO 형식에 따름"
+    )
+    @GetMapping(
+            value = "/query/deleted_list"
+    )
+    public Map<String, Object> queryDeletedTodoList(
+            @NotNull @Param("writer") String writer
+    ) throws NoSuchElementException {
+
+        return this.todoQueryService.requestQueryDeletedTodoList(writer);
     }
 }

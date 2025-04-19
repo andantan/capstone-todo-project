@@ -5,12 +5,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
-import org.zerock.todoserviceproject.application.dto.todo.archive.ArchiveTodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.archive.TodoArchiveDTO;
 import org.zerock.todoserviceproject.application.dto.todo.map.ProjectionMapper;
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestRemoveTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
-import org.zerock.todoserviceproject.domain.repository.ArchiveTodoRepository;
-import org.zerock.todoserviceproject.domain.repository.TodoRepository;
+import org.zerock.todoserviceproject.domain.repository.todoArchive.TodoArchiveRepository;
+import org.zerock.todoserviceproject.domain.repository.todo.TodoRepository;
 
 import java.util.Map;
 
@@ -20,7 +20,7 @@ import java.util.Map;
 public class TodoRemoveServiceImpl implements TodoRemoveService {
 
     private final TodoRepository todoRepository;
-    private final ArchiveTodoRepository archiveTodoRepository;
+    private final TodoArchiveRepository archiveTodoRepository;
     private final ProjectionMapper projectionMapper;
 
 
@@ -31,7 +31,7 @@ public class TodoRemoveServiceImpl implements TodoRemoveService {
                 this.retriveTupleAndRemove(requestRemoveTodoDTO)
         );
 
-        ArchiveTodoDTO archiveTodoDTO = this.projectionMapper.convertToArchive(
+        TodoArchiveDTO archiveTodoDTO = this.projectionMapper.convertToArchive(
                 archiveTargetTodoDTO, requestRemoveTodoDTO.getDelta()
         );
 

@@ -1,4 +1,4 @@
-package org.zerock.todoserviceproject.domain.repository.extension.remove;
+package org.zerock.todoserviceproject.domain.repository.todo.extension.remove;
 
 import com.querydsl.jpa.JPQLQuery;
 import lombok.extern.log4j.Log4j2;
