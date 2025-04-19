@@ -24,7 +24,7 @@ public class BaseAccessTimeEntity {
             updatable = false
     )
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime regdate;
+    private LocalDateTime regDate;
 
 
     @LastModifiedDate

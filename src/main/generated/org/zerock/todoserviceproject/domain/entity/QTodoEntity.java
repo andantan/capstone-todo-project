@@ -19,7 +19,7 @@ public class QTodoEntity extends EntityPathBase<TodoEntity> {
 
     public static final QTodoEntity todoEntity = new QTodoEntity("todoEntity");
 
-    public final org.zerock.todoserviceproject.domain.entity.base.QBaseTImeEntity _super = new org.zerock.todoserviceproject.domain.entity.base.QBaseTImeEntity(this);
+    public final org.zerock.todoserviceproject.domain.entity.base.QBaseAccessTimeEntity _super = new org.zerock.todoserviceproject.domain.entity.base.QBaseAccessTimeEntity(this);
 
     public final BooleanPath complete = createBoolean("complete");
 
@@ -31,7 +31,7 @@ public class QTodoEntity extends EntityPathBase<TodoEntity> {
     public final DateTimePath<java.time.LocalDateTime> modDate = _super.modDate;
 
     //inherited
-    public final DateTimePath<java.time.LocalDateTime> regdate = _super.regdate;
+    public final DateTimePath<java.time.LocalDateTime> regDate = _super.regDate;
 
     public final StringPath title = createString("title");
 

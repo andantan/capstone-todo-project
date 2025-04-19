@@ -35,9 +35,9 @@ public class BaseArchiveTimeEntity {
     @Column(
             name = "delta",
             nullable = false,
-            columnDefinition = "SMALLINT DEFAULT 3"
+            columnDefinition = "SMALLINT"
     )
-    private Integer delta = 3;
+    private Integer delta;
 
 
     @PrePersist
@@ -48,8 +48,4 @@ public class BaseArchiveTimeEntity {
         expireDate = regdate.plusDays(delta);
     }
 
-
-    public void setDeltaDays(int newDelta) {
-        this.delta = newDelta;
-    }
 }

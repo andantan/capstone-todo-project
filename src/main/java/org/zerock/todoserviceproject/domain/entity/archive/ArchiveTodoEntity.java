@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.zerock.todoserviceproject.domain.entity.base.BaseAccessTimeEntity;
 import org.zerock.todoserviceproject.domain.entity.base.BaseArchiveTimeEntity;
 import org.zerock.todoserviceproject.domain.entity.converter.LocalDateTimeConverter;
 
