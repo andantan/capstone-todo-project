@@ -1,6 +1,5 @@
 package org.zerock.todoserviceproject.domain.entity.base;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.EntityListeners;
@@ -16,7 +15,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @lombok.Getter
-public class BaseTimeEntity {
+public class BaseAccessTimeEntity {
 
     @CreatedDate
     @Column(

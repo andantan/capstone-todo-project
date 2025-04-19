@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import jakarta.persistence.*;
 import lombok.*;
 
-import org.zerock.todoserviceproject.domain.entity.base.BaseTimeEntity;
+import org.zerock.todoserviceproject.domain.entity.base.BaseAccessTimeEntity;
 import org.zerock.todoserviceproject.domain.entity.converter.LocalDateTimeConverter;
 
 
@@ -16,7 +16,7 @@ import org.zerock.todoserviceproject.domain.entity.converter.LocalDateTimeConver
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="todo_tbl")
-public class TodoEntity extends BaseTimeEntity {
+public class TodoEntity extends BaseAccessTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tno;
