@@ -31,7 +31,7 @@ public class ProjectionMapper {
         return this.modelMapper.map(archiveTodoDTO, TodoArchiveEntity.class);
     }
 
-    public TodoArchiveDTO convertToArchive(TodoDTO targetTodoDTO, Integer delta) {
+    public TodoArchiveDTO convertToTodoArchiveDTO(TodoDTO targetTodoDTO, Integer delta) {
 
         return TodoArchiveDTO.builder()
                 .tno(targetTodoDTO.getTno())
@@ -43,6 +43,18 @@ public class ProjectionMapper {
                 .complete(targetTodoDTO.isComplete())
                 .delta(delta)
                 .build();
+    }
 
+
+    public TodoDTO convertToTodoDTO(TodoArchiveDTO targetTodoArchiveDTO) {
+
+        return TodoDTO.builder()
+                .writer(targetTodoArchiveDTO.getWriter())
+                .title(targetTodoArchiveDTO.getTitle())
+                .date(targetTodoArchiveDTO.getDate())
+                .from(targetTodoArchiveDTO.getFrom())
+                .to(targetTodoArchiveDTO.getTo())
+                .complete(targetTodoArchiveDTO.isComplete())
+                .build();
     }
 }

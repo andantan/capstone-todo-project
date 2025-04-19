@@ -7,34 +7,32 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.todoserviceproject.application.controller.AbstractTodoController;
-import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestRegisterTodoDTO;
-import org.zerock.todoserviceproject.domain.service.module.register.TodoRegisterService;
+import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestRestoreTodoDTO;
+import org.zerock.todoserviceproject.domain.service.module.restore.TodoRestoreService;
 
 import java.util.Map;
-
 
 @RestController
 @Log4j2
 @RequiredArgsConstructor
-public class TodoRegisterController extends AbstractTodoController {
+public class TodoRestoreController extends AbstractTodoController {
 
-    private final TodoRegisterService todoRegisterService;
-
+    private final TodoRestoreService todoRestoreService;
 
     @Operation(
-            summary = "Todo 등록",
-            description = "RequestRegisterTodoDTO 형식 참조"
+            summary = "Todo 복원",
+            description = "RequestRestoreTodoDTO 형식 참조"
     )
-    @PostMapping(
-            value = "/register",
+    @PutMapping(
+            value = "/restore",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Map<String, String> register(
-            @Valid @RequestBody RequestRegisterTodoDTO requestRegisterTodoDTO,
+    public Map<String, String> restore(
+            @Valid @RequestBody RequestRestoreTodoDTO requestRestoreTodoDTO,
             BindingResult requestBindingResult
     ) throws BindException {
 
@@ -42,7 +40,6 @@ public class TodoRegisterController extends AbstractTodoController {
             throw new BindException(requestBindingResult);
         }
 
-        return this.todoRegisterService.requestRegister(requestRegisterTodoDTO);
+        return todoRestoreService.requestRestore(requestRestoreTodoDTO);
     }
-
 }

@@ -6,7 +6,7 @@
 
 ========================
 
-1. 신규 등록
+신규 등록
 
 [ request( 요청 ) ]
 
@@ -38,35 +38,4 @@
 
 ========================
 
-2. 삭제 취소 -> 재등록
 
-[ request( 요청 ) ]
-
-** request field -> 재등록은 "tno" 필드 필요
- - tno: number				    -> 필수 필드
- - writer: "id String"			-> 필수 필드
- - title: "String"				-> 필수 필드
- - date: "YYYY-MM-dd"			-> 필수 필드
- - from: "YYYY-MM-dd HH:mm"	    -> 필수 필드
- - to: "YYYY-MM-dd HH:mm"		-> 필수 필드
- - complete: boolean			-> 필수 필드
-
-
-재동록 예시) request_register_data = {
-    "tno": 189,
-    "writer": "재등록 writer",
-    "title": "Todo 재등록",
-    "date": "2025-04-16",
-    "from": "2025-04-16 10:00",
-    "to": "2025-04-16 22:00",
-    "complete": true
-}
-
-[ response( 응답 ) ]
-
-{
-    "execution": "re-register",
-    "writer": "재등록 writer",
-    "tno": 189,
-    "status": "success"
-}

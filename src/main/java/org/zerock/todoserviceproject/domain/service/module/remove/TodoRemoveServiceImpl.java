@@ -31,7 +31,7 @@ public class TodoRemoveServiceImpl implements TodoRemoveService {
                 this.retriveTupleAndRemove(requestRemoveTodoDTO)
         );
 
-        TodoArchiveDTO archiveTodoDTO = this.projectionMapper.convertToArchive(
+        TodoArchiveDTO archiveTodoDTO = this.projectionMapper.convertToTodoArchiveDTO(
                 archiveTargetTodoDTO, requestRemoveTodoDTO.getDelta()
         );
 
