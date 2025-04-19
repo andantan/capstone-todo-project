@@ -3,9 +3,9 @@ package org.zerock.todoserviceproject.domain.service.module.query;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.map.ProjectionMapper;
 import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestQueryTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
@@ -22,13 +22,13 @@ public class TodoQueryServiceImpl implements TodoQueryService {
 
     private final TodoRepository todoRepository;
     private final ResponseMapper responseMapper;
-    private final ModelMapper modelMapper;
+    private final ProjectionMapper projectionMapper;
 
 
     @Override
     public Map<String, Object> requestQueryTodoList(RequestQueryTodoDTO requestQueryTodoDTO) {
         List<TodoDTO> todoDTOList = this.todoRepository.findListByDate(requestQueryTodoDTO).stream()
-                .map(todo -> this.modelMapper.map(todo, TodoDTO.class))
+                .map(projectionMapper::mapToDTO)
                 .toList();
 
         log.info(todoDTOList);

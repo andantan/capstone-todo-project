@@ -3,10 +3,9 @@ package org.zerock.todoserviceproject.domain.service.module.modify;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
-import org.zerock.todoserviceproject.application.dto.todo.map.RequestMapper;
+import org.zerock.todoserviceproject.application.dto.todo.map.ProjectionMapper;
 import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestModifyTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseModifyTodoDTO;
@@ -23,12 +22,12 @@ public class TodoModifyServiceImpl implements TodoModifyService {
 
     private final TodoRepository todoRepository;
     private final ResponseMapper responseMapper;
-    private final ModelMapper modelMapper;
+    private final ProjectionMapper projectionMapper;
 
     @Override
     public Map<String, String> requestModify(RequestModifyTodoDTO requestModifyTodoDTO) {
         TodoDTO targetTodoDTO = this.todoRepository.findById(requestModifyTodoDTO.getTno())   // Query
-                .map(todo -> modelMapper.map(todo, TodoDTO.class))  // If exist then mapping
+                .map(projectionMapper::mapToDTO)  // If exist then mapping
                 .orElseThrow(() -> new NoSuchElementException("Todo tuple not found: " + requestModifyTodoDTO.getTno())); // else throw exception
 
         if (requestModifyTodoDTO.getTitle() != null) {
@@ -51,11 +50,11 @@ public class TodoModifyServiceImpl implements TodoModifyService {
 
 
         TodoEntity resultEntity = this.todoRepository.save(
-                this.modelMapper.map(targetTodoDTO, TodoEntity.class)
+                this.projectionMapper.mapToEntity(targetTodoDTO)
         );
 
         ResponseModifyTodoDTO responseModifyTodoDTO = this.responseMapper.mapToModifyResponseTodoDTO(
-                this.modelMapper.map(resultEntity, TodoDTO.class)
+                this.projectionMapper.mapToDTO(resultEntity)
         );
 
         return this.responseMapper.getResponseMap(responseModifyTodoDTO);

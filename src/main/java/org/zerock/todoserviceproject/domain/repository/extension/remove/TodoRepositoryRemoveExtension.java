@@ -5,5 +5,5 @@ import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 
 public interface TodoRepositoryRemoveExtension {
 
-    TodoEntity RetriveTupleAndRemove(RequestRemoveTodoDTO requestRemoveTodoDTO);
+    TodoEntity findRemoveTarget(RequestRemoveTodoDTO requestRemoveTodoDTO);
 }

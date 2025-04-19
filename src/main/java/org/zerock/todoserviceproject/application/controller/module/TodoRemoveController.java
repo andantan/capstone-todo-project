@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.zerock.todoserviceproject.application.controller.AbstractTodoController;
+import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestRemoveTodoDTO;
 import org.zerock.todoserviceproject.domain.service.module.remove.TodoRemoveService;
 
 import java.util.Map;
@@ -23,16 +24,20 @@ public class TodoRemoveController extends AbstractTodoController {
 
 
     @Operation(
-            summary = "Todo 삭제 ( PK := tno )",
+            summary = "Todo 삭제",
             description = "DELETE BY TNO"
     )
     @DeleteMapping(
             value = "/remove"
     )
     public Map<String, String> remove(
-            @Valid @Param("tno") Long tno
+            @Valid @Param("writer") String writer,
+            @Valid @Param("tno") Long tno,
+            @Valid @Param("delta") Integer delta
     ) throws NoSuchElementException {
 
-        return this.todoRemoveService.requestRemove(tno);
+        return this.todoRemoveService.requestRemove(
+                RequestRemoveTodoDTO.builder().writer(writer).tno(tno).delta(delta).build()
+        );
     }
 }
