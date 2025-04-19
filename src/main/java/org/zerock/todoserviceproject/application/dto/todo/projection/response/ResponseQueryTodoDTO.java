@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -14,11 +15,17 @@ import java.time.LocalDate;
 public class ResponseQueryTodoDTO {
     private Long tno;
 
-    private String title;
     private String writer;
 
+    private String title;
+
+    private LocalDate date;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dueDate;
+    private LocalDateTime from;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDateTime to;
 
     private boolean complete;
 }

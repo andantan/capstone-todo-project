@@ -3,11 +3,11 @@ package org.zerock.todoserviceproject.application.dto.todo.projection.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -15,16 +15,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestModifyTodoDTO {
-    @NotNull
-    private Long tno;
+    @NotNull private Long tno;
+    @NotNull private String writer;
+    @Nullable private String title;
+    @Nullable private LocalDate date;
 
     @Nullable
-    private String title;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime from;
 
     @Nullable
-    @FutureOrPresent
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate dueDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime to;
 
     boolean complete;
 }

@@ -40,6 +40,6 @@ public class TodoModifyController extends AbstractTodoController {
             throw new BindException(requestBindingResult);
         }
 
-        return this.todoModifyService.requestUpdateTodo(requestModifyTodoDTO);
+        return this.todoModifyService.requestModify(requestModifyTodoDTO);
     }
 }

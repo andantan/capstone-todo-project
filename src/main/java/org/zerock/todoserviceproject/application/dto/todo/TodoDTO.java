@@ -15,11 +15,14 @@ import java.time.LocalDateTime;
 @ToString
 public class TodoDTO {
     private Long tno;
-
-    private String title;
     private String writer;
 
-    private LocalDate dueDate;
+    private String title;
+
+    private LocalDate date;
+
+    private LocalDateTime from;
+    private LocalDateTime to;
 
     private boolean complete;
 
@@ -31,6 +34,8 @@ public class TodoDTO {
 
 
     public void changeTitle(String title) { this.title = title; }
-    public void changeDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
+    public void changeDate(LocalDate date) { this.date = date; }
+    public void changeFrom(LocalDateTime from) { this.from = from; }
+    public void changeTo(LocalDateTime to) { this.to = to; }
     public void changeComplete(boolean complete) { this.complete = complete; }
 }

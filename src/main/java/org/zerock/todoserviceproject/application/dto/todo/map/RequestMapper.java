@@ -10,10 +10,15 @@ public class RequestMapper {
 
     public TodoDTO mapToTodoDTO(RequestRegisterTodoDTO requestRegisterTodoDTO) {
         return TodoDTO.builder()
-                .title(requestRegisterTodoDTO.getTitle())
                 .writer(requestRegisterTodoDTO.getWriter())
-                .dueDate(requestRegisterTodoDTO.getDueDate())
+                .title(requestRegisterTodoDTO.getTitle())
+                .date(requestRegisterTodoDTO.getDate())
+                .from(requestRegisterTodoDTO.getFrom())
+                .to(requestRegisterTodoDTO.getTo())
+                .complete(requestRegisterTodoDTO.getComplete())
                 .build();
     }
+
+
 
 }

@@ -26,7 +26,7 @@ public class TodoRegisterController extends AbstractTodoController {
 
 
     @Operation(
-            summary = "Todo 일정 등록",
+            summary = "Todo 등록",
             description = "RequestRegisterTodoDTO 형식 참조"
     )
     @PostMapping(
