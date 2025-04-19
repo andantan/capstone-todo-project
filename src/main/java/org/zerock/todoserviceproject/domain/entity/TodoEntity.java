@@ -3,11 +3,10 @@ package org.zerock.todoserviceproject.domain.entity;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
-import org.zerock.todoserviceproject.domain.entity.base.BaseTImeEntity;
+import org.zerock.todoserviceproject.domain.entity.base.BaseTimeEntity;
 import org.zerock.todoserviceproject.domain.entity.converter.LocalDateTimeConverter;
 
 
@@ -17,7 +16,7 @@ import org.zerock.todoserviceproject.domain.entity.converter.LocalDateTimeConver
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="todo_tbl")
-public class TodoEntity extends BaseTImeEntity {
+public class TodoEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tno;

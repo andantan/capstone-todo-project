@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @lombok.Getter
-public class BaseTImeEntity {
+public class BaseTimeEntity {
 
     @CreatedDate
     @Column(
