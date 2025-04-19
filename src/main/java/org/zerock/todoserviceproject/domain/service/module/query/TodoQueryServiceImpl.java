@@ -31,8 +31,6 @@ public class TodoQueryServiceImpl implements TodoQueryService {
                 .map(projectionMapper::mapToDTO)
                 .toList();
 
-        log.info(todoDTOList);
-
         List<ResponseQueryTodoDTO> responseBodyTodoDTOList = todoDTOList.stream()
                 .map(responseMapper::mapToQueryResponseTodoDTO)
                 .toList();

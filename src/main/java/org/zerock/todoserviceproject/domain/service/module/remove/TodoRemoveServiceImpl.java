@@ -35,8 +35,6 @@ public class TodoRemoveServiceImpl implements TodoRemoveService {
                 archiveTargetTodoDTO, requestRemoveTodoDTO.getDelta()
         );
 
-        log.info(archiveTodoDTO);
-
         this.archiveTodoRepository.save(
                 this.projectionMapper.mapToEntity(archiveTodoDTO)
         );

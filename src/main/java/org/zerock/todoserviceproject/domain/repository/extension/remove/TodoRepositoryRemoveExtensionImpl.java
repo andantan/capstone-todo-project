@@ -25,6 +25,6 @@ public class TodoRepositoryRemoveExtensionImpl extends QuerydslRepositorySupport
         query.where(todoEntity.tno.eq(requestRemoveTodoDTO.getTno()));
         query.where(todoEntity.writer.eq(requestRemoveTodoDTO.getWriter()));
 
-        return query.fetchOne();
+        return query.fetch().get(0);
     }
 }
