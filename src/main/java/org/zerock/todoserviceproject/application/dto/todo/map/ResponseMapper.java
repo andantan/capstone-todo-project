@@ -56,6 +56,7 @@ public class ResponseMapper {
         responseMap.put("tno", responseQueryTodoArchiveDTO.getTno().toString());
         responseMap.put("from", responseQueryTodoArchiveDTO.getFrom().toString().replace("T", " "));
         responseMap.put("to", responseQueryTodoArchiveDTO.getTo().toString().replace("T", " "));
+        responseMap.put("expire", responseQueryTodoArchiveDTO.getExpireDate().toString().replace("T", " "));
         responseMap.put("title", responseQueryTodoArchiveDTO.getTitle());
         responseMap.put("complete", responseQueryTodoArchiveDTO.isComplete() ? "true" : "false");
 
@@ -107,6 +108,7 @@ public class ResponseMapper {
                 .date(todoArchiveDTO.getDate())
                 .from(todoArchiveDTO.getFrom())
                 .to(todoArchiveDTO.getTo())
+                .expireDate(todoArchiveDTO.getExpireDate())
                 .complete(todoArchiveDTO.isComplete())
                 .build();
     }

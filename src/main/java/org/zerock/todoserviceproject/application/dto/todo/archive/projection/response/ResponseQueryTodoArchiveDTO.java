@@ -26,5 +26,8 @@ public class ResponseQueryTodoArchiveDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime to;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDateTime expireDate;
+
     private boolean complete;
 }
