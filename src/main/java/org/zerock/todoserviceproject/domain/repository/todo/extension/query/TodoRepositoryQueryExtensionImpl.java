@@ -23,7 +23,7 @@ public class TodoRepositoryQueryExtensionImpl extends QuerydslRepositorySupport
         JPQLQuery<TodoEntity> query = from(todoEntity);
 
         query.where(todoEntity.writer.eq(requestQueryTodoDTO.getWriter()));
-        query.where(todoEntity.date.eq(requestQueryTodoDTO.getDate()));
+        query.where(todoEntity.date.goe(requestQueryTodoDTO.getDate()));
 
         return query.fetch();
     }
