@@ -29,7 +29,7 @@ public class BaseArchiveTimeEntity {
             updatable = false
     )
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime expireDate;
+    private LocalDateTime expireDate;   // 자동 보관된 todo가 완전히 삭제되는 일자
 
 
     @Column(
@@ -37,7 +37,7 @@ public class BaseArchiveTimeEntity {
             nullable = false,
             columnDefinition = "SMALLINT"
     )
-    private Integer delta;
+    private Integer delta;  // 며칠동안 보관할꺼야?
 
 
     @PrePersist
