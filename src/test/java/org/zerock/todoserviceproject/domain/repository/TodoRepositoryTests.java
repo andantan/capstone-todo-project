@@ -5,6 +5,9 @@ import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.zerock.todoserviceproject.application.dto.todo.TodoDTO;
+import org.zerock.todoserviceproject.application.dto.todo.map.ProjectionMapper;
+import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestQueryTodoDTO;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 import org.zerock.todoserviceproject.domain.repository.todo.TodoRepository;
 
@@ -12,6 +15,7 @@ import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -20,6 +24,10 @@ public class TodoRepositoryTests {
 
     @Autowired
     private TodoRepository todoRepository;
+
+    @Autowired
+    private ProjectionMapper projectionMapper;
+
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     @Test
@@ -81,6 +89,26 @@ public class TodoRepositoryTests {
             todoRepository.save(todo);
         });
 
+    }
+
+
+    @Test
+    public void TodoRepositoryTestQuery() {
+        RequestQueryTodoDTO requestQueryTodoDTO = RequestQueryTodoDTO.builder()
+                .writer("JKB").date(LocalDate.of(2025, 4, 20)).build();
+
+        List<TodoEntity> list =  todoRepository.findListByDate(requestQueryTodoDTO);
+
+        list.forEach(entity -> log.info(projectionMapper.mapToDTO(entity)));
+
+        log.info("=======================================================================");
+
+        RequestQueryTodoDTO requestQueryTodoDTO2 = RequestQueryTodoDTO.builder()
+                .writer("man").date(LocalDate.of(2025, 4, 20)).build();
+
+        List<TodoEntity> list2 =  todoRepository.findListByDate(requestQueryTodoDTO2);
+
+        list2.forEach(entity -> log.info(projectionMapper.mapToDTO(entity)));
     }
 
     public String convertToDatabaseColumn(LocalDateTime attribute) {
