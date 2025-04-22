@@ -61,7 +61,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
     testAnnotationProcessor 'org.projectlombok:lombok'
-    // Dependendy end: Lombok
+    // Dependency end: Lombok
 
 
     // Dependency: Modelmapper

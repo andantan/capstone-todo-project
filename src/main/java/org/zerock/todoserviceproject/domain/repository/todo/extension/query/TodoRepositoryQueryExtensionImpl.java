@@ -55,7 +55,8 @@ public class TodoRepositoryQueryExtensionImpl extends QuerydslRepositorySupport
         fromToCondition.and(todoEntity.from.loe(startOfDay))
                         .and(todoEntity.to.goe(startOfDay));
 
-        dateBuilder.or(fromCondition).or(toCondition);
+
+        dateBuilder.or(fromCondition).or(toCondition).or(fromToCondition);
 
         return dateBuilder;
     }
