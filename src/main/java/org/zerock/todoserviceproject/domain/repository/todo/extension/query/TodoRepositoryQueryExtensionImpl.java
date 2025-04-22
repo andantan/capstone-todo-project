@@ -10,6 +10,7 @@ import org.zerock.todoserviceproject.application.dto.todo.projection.request.Req
 import org.zerock.todoserviceproject.domain.entity.QTodoEntity;
 import org.zerock.todoserviceproject.domain.entity.TodoEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,6 +44,7 @@ public class TodoRepositoryQueryExtensionImpl extends QuerydslRepositorySupport
         BooleanBuilder dateBuilder = new BooleanBuilder();
         BooleanBuilder fromCondition = new BooleanBuilder();
         BooleanBuilder toCondition = new BooleanBuilder();
+        BooleanBuilder fromToCondition = new BooleanBuilder();
 
         fromCondition.and(todoEntity.from.goe(startOfDay))
                 .and(todoEntity.from.loe(endOfDay));
@@ -50,7 +52,11 @@ public class TodoRepositoryQueryExtensionImpl extends QuerydslRepositorySupport
         toCondition.and(todoEntity.to.goe(startOfDay))
                 .and(todoEntity.to.loe(endOfDay));
 
-        dateBuilder.or(fromCondition).or(toCondition);
+        fromToCondition.and(todoEntity.from.loe(startOfDay))
+                        .and(todoEntity.to.goe(startOfDay));
+
+
+        dateBuilder.or(fromCondition).or(toCondition).or(fromToCondition);
 
         return dateBuilder;
     }
