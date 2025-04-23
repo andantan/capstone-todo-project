@@ -13,14 +13,26 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
 
   // 전화번호 입력값 형식 지정
   const handlePhoneChange = (e) => {
-    let value = e.target.value;
-    let formattedValue = value.replace(/[^\d]/g, '');
-    if (formattedValue.length > 3 && formattedValue.length <= 6) {
-      formattedValue = formattedValue.substring(0, 3) + '-' + formattedValue.substring(3);
-    } else if (formattedValue.length > 6) {
-      formattedValue = formattedValue.substring(0, 3) + '-' + formattedValue.substring(3, 7) + '-' + formattedValue.substring(7, 11);
+    const numbersOnly = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+    let formatted = '';
+  
+    if (numbersOnly.length <= 3) {
+      formatted = numbersOnly;
+    } else if (numbersOnly.length <= 7) {
+      formatted = `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+    } else {
+      formatted = `${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 7)}-${numbersOnly.slice(7, 11)}`;
     }
-    setUserPhone(formattedValue);
+  
+    setUserPhone(formatted);
+  
+    // 입력이 13자 되었을 때만 유효성 체크
+    if (formatted.length === 13) {
+      const phoneRegex = /^010-\d{4}-\d{4}$/;
+      if (!phoneRegex.test(formatted)) {
+        message.error('전화번호 형식이 올바르지 않습니다.');
+      }
+    }
   };
 
   // 사용자 정보 확인 요청

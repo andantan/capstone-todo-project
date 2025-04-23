@@ -165,15 +165,25 @@ const JoinPage = () => {
 
   // 전화번호 입력 시 자동 포맷팅 및 유효성 검사
   const handlePhoneChange = (e) => {
-    let value = e.target.value.replace(/[^0-9]/g, '');
-    if (value.length > 3 && value.length <= 6) {
-      value = value.substring(0, 3) + '-' + value.substring(3);
-    } else if (value.length > 6) {
-      value = value.substring(0, 3) + '-' + value.substring(3, 7) + '-' + value.substring(7, 11);
-    }
-    setPhoneNumber(value);
+    let numbersOnly = e.target.value.replace(/[^0-9]/g, ''); // 숫자만 추출
+    let formatted = '';
 
-    if (value.length === 13 && !phoneRegex.test(value)) {
+    if (numbersOnly.length <= 3) {
+      formatted = numbersOnly;
+    } else if (numbersOnly.length <= 7) {
+      formatted = numbersOnly.slice(0, 3) + '-' + numbersOnly.slice(3);
+    } else {
+      formatted =
+        numbersOnly.slice(0, 3) +
+        '-' +
+        numbersOnly.slice(3, 7) +
+        '-' +
+        numbersOnly.slice(7, 11);
+    }
+
+    setPhoneNumber(formatted);
+
+    if (formatted.length === 13 && !phoneRegex.test(formatted)) {
       message.error('전화번호 형식이 올바르지 않습니다.');
     }
   };
