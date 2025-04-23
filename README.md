@@ -11,13 +11,13 @@ Backend (Server)
 
 ### Sprint Backlog
 
-2025-04-17(목) :  역할 분배 및 Github repository 연걸 --- (완료)
-2025-04-18(금) :  Front-end <-> Back-end 환경 동기화 & Todo API-Interface 조정 --- (완료)
-2025-04-20(일) :  Front-end <-> Back-end Todo API 연결 & Login API Interface 조정 --- (완료)
-2025-04-21(월) :  Back-end 간 Project structure 통일 & Database(MariaDB) 연결 (백엔드) --- (완료)
-2025-04-22(화) :  Front-end <-> Back-end Login API 연결 (완료)
-2025-04-23(수) :  최종 테스트 --- 버그 수정 예정 (완료)
-2025-04-24(목) :  Github 최종 병합 (완료)     
+2025-04-17(목) :  역할 분배 및 Github repository 연걸 --- (완료)  \n
+2025-04-18(금) :  Front-end <-> Back-end 환경 동기화 & Todo API-Interface 조정 --- (완료)\n
+2025-04-20(일) :  Front-end <-> Back-end Todo API 연결 & Login API Interface 조정 --- (완료)\n
+2025-04-21(월) :  Back-end 간 Project structure 통일 & Database(MariaDB) 연결 (백엔드) --- (완료)\n
+2025-04-22(화) :  Front-end <-> Back-end Login API 연결 (완료)\n
+2025-04-23(수) :  최종 테스트 --- 버그 수정 예정 (완료)\n
+2025-04-24(목) :  Github 최종 병합 (완료)     \n
 
 ### Branches
 
