@@ -14,15 +14,10 @@ import java.util.Optional;
 import org.zerock.todoserviceproject.application.dto.login.SignUpRequest;
 import org.zerock.todoserviceproject.application.dto.login.UsernameCheckRequest;
 import org.zerock.todoserviceproject.application.dto.login.LoginRequest;
-<<<<<<< HEAD:src/main/java/org/zerock/todoserviceproject/application/controller/module/login/UserController.java
-import org.zerock.todoserviceproject.application.dto.login.PasswordVerificationRequest; 
-import org.zerock.todoserviceproject.application.dto.login.PasswordVerificationResponse; 
-import org.zerock.todoserviceproject.application.dto.login.PasswordResetRequest; 
-=======
+
 import org.zerock.todoserviceproject.application.dto.login.PasswordVerificationRequest;
 import org.zerock.todoserviceproject.application.dto.login.PasswordVerificationResponse;
 import org.zerock.todoserviceproject.application.dto.login.PasswordResetRequest;
->>>>>>> origin/minwoo-wrapping:Server/src/main/java/org/zerock/todoserviceproject/application/controller/module/login/UserController.java
 import org.zerock.todoserviceproject.application.dto.login.LoginSuccessResponse;
 
 import org.zerock.todoserviceproject.domain.service.module.login.UserService;
@@ -41,7 +36,7 @@ public class UserController {
     /**
      * 아이디 중복 확인 API 엔드포인트
      * Put /auth/check-username?username
-     * @param username 확인할 아이디 (@RequestBody로 받음)
+     * @param request 확인할 아이디 (@RequestBody로 받음)
      * @return 아이디 사용 가능 시 200 OK ("success"), 중복 시 409 Conflict ("fault")
      */
     @PutMapping("/check-username")
@@ -97,15 +92,9 @@ public class UserController {
         boolean isAuthenticated = userService.verifyCredentials(loginRequest.getUsername(), loginRequest.getPassword());
 
         if (isAuthenticated) {
-<<<<<<< HEAD:src/main/java/org/zerock/todoserviceproject/application/controller/module/login/UserController.java
            //로그인 성공
            LoginSuccessResponse response = new LoginSuccessResponse("Login successful", loginRequest.getUsername());
            return ResponseEntity.ok().body(response);
-=======
-            //로그인 성공
-            LoginSuccessResponse response = new LoginSuccessResponse("Login successful", loginRequest.getUsername());
-            return ResponseEntity.ok().body(response);
->>>>>>> origin/minwoo-wrapping:Server/src/main/java/org/zerock/todoserviceproject/application/controller/module/login/UserController.java
         } else {
             //로그인 실패
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
