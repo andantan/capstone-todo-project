@@ -23,7 +23,7 @@ Backend (Server)
 
 ### Branches
 
-default: main(default)
-전규빈: qbean, qbean-wrapping
-조민우: minwoo, minwoo-wrapping
-정구범: login
+default: main(default) <br/> 
+전규빈: qbean, qbean-wrapping <br/> 
+조민우: minwoo, minwoo-wrapping <br/> 
+정구범: login <br/> 
