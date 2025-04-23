@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.zerock.todoserviceproject.domain.repository.TodoRepositoryTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-04-20T14:58:41.181Z" hostname="QBEAN" time="1.914">
+  <properties/>
+  <testcase name="TodoRepositoryTestQuery()" classname="org.zerock.todoserviceproject.domain.repository.TodoRepositoryTests" time="1.914"/>
+  <system-out><![CDATA[23:58:33.720 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [org.zerock.todoserviceproject.domain.repository.TodoRepositoryTests]: TodoRepositoryTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+23:58:33.931 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration org.zerock.todoserviceproject.TodoServiceProjectApplication for test class org.zerock.todoserviceproject.domain.repository.TodoRepositoryTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2025-04-20T23:58:34.611+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : Starting TodoRepositoryTests using Java 17.0.14 with PID 5468 (started by kyubi in C:\Java-isolated\IntelliJ\todoServiceProject)
+2025-04-20T23:58:34.613+09:00 DEBUG 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-04-20T23:58:34.614+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : No active profile set, falling back to 1 default profile: "default"
+2025-04-20T23:58:35.973+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-04-20T23:58:36.131+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 140 ms. Found 2 JPA repository interfaces.
+2025-04-20T23:58:37.017+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-04-20T23:58:37.117+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-04-20T23:58:37.175+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-04-20T23:58:37.660+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-04-20T23:58:37.696+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-04-20T23:58:37.790+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.mariadb.jdbc.Connection@7507d96c
+2025-04-20T23:58:37.792+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-04-20T23:58:37.872+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 11.7.2
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-04-20T23:58:39.027+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-04-20T23:58:39.303+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-04-20T23:58:40.279+09:00  WARN 5468 --- [todoServiceProject] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-04-20T23:58:41.155+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : Started TodoRepositoryTests in 6.938 seconds (process running for 8.739)
+2025-04-20T23:58:43.058+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : TodoDTO(tno=2, writer=JKB, title=Dummy JKB title - 3, date=2025-06-03, from=2025-04-19T08:00, to=2025-04-20T19:00, complete=false)
+2025-04-20T23:58:43.060+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : =======================================================================
+2025-04-20T23:58:43.066+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : TodoDTO(tno=284, writer=man, title=Dummy Man title - 9, date=2025-10-09, from=2025-04-19T18:00, to=2025-04-20T11:00, complete=false)
+2025-04-20T23:58:43.067+09:00  INFO 5468 --- [todoServiceProject] [    Test worker] o.z.t.d.repository.TodoRepositoryTests   : TodoDTO(tno=285, writer=man, title=Dummy Man title - 10, date=2025-11-10, from=2025-04-18T18:00, to=2025-04-20T11:00, complete=false)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
