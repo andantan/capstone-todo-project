@@ -17,6 +17,7 @@ import org.zerock.todoserviceproject.application.dto.login.LoginRequest;
 import org.zerock.todoserviceproject.application.dto.login.PasswordVerificationRequest; 
 import org.zerock.todoserviceproject.application.dto.login.PasswordVerificationResponse; 
 import org.zerock.todoserviceproject.application.dto.login.PasswordResetRequest; 
+import org.zerock.todoserviceproject.application.dto.login.LoginSuccessResponse;
 
 import org.zerock.todoserviceproject.domain.service.module.login.UserService;
 
@@ -79,7 +80,7 @@ public class UserController {
      * POST /auth/login
      * 요청 본문 (JSON): LoginRequest DTO 형식
      * @param loginRequest 로그인 요청 DTO (@RequestBody로 받음)
-     * @return 로그인 성공 시 토큰 등 정보 (200 OK), 실패 시 오류 메시지 (401 Unauthorized 등)
+     * @return 로그인 성공 시 "Login successful" 및 유저정보 (200 OK), 실패 시 오류 메시지 (401 Unauthorized 등)
      */
     @PostMapping("/login")
     @Validated 
@@ -91,7 +92,8 @@ public class UserController {
 
         if (isAuthenticated) {
            //로그인 성공
-             return ResponseEntity.ok().body("Login successful");
+           LoginSuccessResponse response = new LoginSuccessResponse("Login successful", loginRequest.getUsername());
+           return ResponseEntity.ok().body(response);
         } else {
             //로그인 실패
              return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials"); 

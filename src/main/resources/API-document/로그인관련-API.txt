@@ -28,7 +28,12 @@ postman 기준  Body / raw / JSON으로
    "username": "test223",
    "password": "tset1123"
 }
-응답 :  DB에 해당 유저 데이터 일치하는지 확인, 로그인 성공 시  문자열 "Login successful",    실패 시 "Invalid credentials" 반환
+응답 :  DB에 해당 유저 데이터 일치하는지 확인, 로그인 성공 시  
+{
+    "message": "Login successful",
+    "username": "test1"
+}    
+실패 시 "Invalid credentials" 반환
 
 4. 비밀번호 변경 본인확인  URL : /api/auth/verify-user-for-password-change
 Method : Post
