@@ -8,5 +8,5 @@ import java.util.List;
 public interface TodoRepositoryQueryExtension {
 
     List<TodoEntity> findListByDate(RequestQueryTodoDTO requestQueryTodoDTO);
-
+    List<TodoEntity> findMonthlyListByDate(RequestQueryTodoDTO requestQueryTodoDTO);
 }

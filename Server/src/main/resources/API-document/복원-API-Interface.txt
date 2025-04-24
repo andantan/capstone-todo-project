@@ -15,7 +15,7 @@
 
 
 재동록 예시) request_restore_data = {
-    "tno": 189,
+    "tno": 188,
     "writer": "재등록 writer"
 }
 
