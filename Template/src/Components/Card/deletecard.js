@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const DeleteCard = ({ title, to, from, tno, onRestore, expire, complete }) => {
   const [isRestoreModalOpen, setIsRestoreModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 복원 아이콘 클릭 시 모달을 연다
   const handleRestoreClick = () => {
@@ -15,6 +16,9 @@ const DeleteCard = ({ title, to, from, tno, onRestore, expire, complete }) => {
 
   // 복원 확인 시 서버에 복원 요청을 보낸다
   const handleRestoreOk = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       const writer = sessionStorage.getItem('username'); 
       const requestData = { tno, writer };
@@ -31,6 +35,8 @@ const DeleteCard = ({ title, to, from, tno, onRestore, expire, complete }) => {
       console.error('복원 실패:', error);
       message.error('복구 실패.');
       setIsRestoreModalOpen(false);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -61,7 +67,7 @@ const DeleteCard = ({ title, to, from, tno, onRestore, expire, complete }) => {
       <div
         className="status-dot"
         style={{
-          backgroundColor: complete === 'true' ? '#4CAF50' : '#B0BEC5',
+          backgroundColor: complete === 'true' ? '#00c853' : 'gray',
         }}
       ></div>
       <section className='card_header'>
@@ -74,7 +80,7 @@ const DeleteCard = ({ title, to, from, tno, onRestore, expire, complete }) => {
       <hr />
       <section className='card_footer'>
         <p className='card_time'>{`${startFormatted} ~ ${endFormatted}`}</p>
-        <p className='card_time'>삭제 예정: {formattedExpire}</p>
+        <p className='card_time' style={{color: 'red'}}>삭제 예정 : {formattedExpire}</p>
       </section>
 
       <Modal

@@ -12,6 +12,7 @@ const JoinPage = () => {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const [name, setName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const messageShownRef = useRef(false);
 
@@ -23,6 +24,9 @@ const JoinPage = () => {
 
   // ID 중복 여부를 확인하는 함수
   const checkDuplicateId = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!userId) {
       message.warning('ID를 입력하세요!');
       return;
@@ -48,11 +52,16 @@ const JoinPage = () => {
         message.error('ID 중복 확인 중 오류가 발생했습니다.');
         console.error(error);
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // 회원가입 요청을 처리하는 함수
   const handleJoin = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!userId) {
       message.error('ID를 입력하세요!');
       return;
@@ -97,6 +106,8 @@ const JoinPage = () => {
     } catch (error) {
       message.error('회원가입 중 오류가 발생했습니다.');
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -224,7 +235,7 @@ const JoinPage = () => {
 
         {/* 비밀번호 */}
         <div style={{ marginTop: '-20px' }}>
-          <Input
+          <Input.Password
             type="password"
             placeholder="password"
             className="input-field"
@@ -235,7 +246,7 @@ const JoinPage = () => {
 
         {/* 비밀번호 확인 */}
         <div style={{ marginTop: '-2px' }}>
-          <Input
+          <Input.Password
             type="password"
             placeholder="password confirm"
             className="input-field"

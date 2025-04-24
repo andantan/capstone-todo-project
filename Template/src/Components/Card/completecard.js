@@ -1,5 +1,7 @@
 import './card.css';
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { refreshTriggerAtom } from '../../Recoil/Atoms/refreshatom.js';
 import { Switch, message } from 'antd';
 import Modal from '../Modal/modal.js';
 import { MdOutlineDelete } from "react-icons/md";
@@ -10,6 +12,9 @@ const CompleteCard = ({ title, from, to, complete, tno, onDelete, onCompleteCanc
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [pendingChecked, setPendingChecked] = useState(complete);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const setRefreshTrigger = useSetRecoilState(refreshTriggerAtom);
 
   // 삭제 버튼 클릭 시 모달을 연다
   const handleDeleteClick = () => {
@@ -18,6 +23,9 @@ const CompleteCard = ({ title, from, to, complete, tno, onDelete, onCompleteCanc
 
   // 삭제 확인 시 서버에 삭제 요청을 보낸다
   const handleDeleteConfirm = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       const writer = sessionStorage.getItem('username'); 
       const delta = 3;
@@ -25,11 +33,14 @@ const CompleteCard = ({ title, from, to, complete, tno, onDelete, onCompleteCanc
         params: { writer, tno, delta },
       });
       setIsDeleteModalOpen(false);
+      setRefreshTrigger(prev => prev + 1);
       message.success('해당 항목이 삭제되었습니다.');
       if (onDelete) onDelete(tno);
     } catch (error) {
       message.error('삭제 실패');
       console.error('삭제 실패:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -46,6 +57,9 @@ const CompleteCard = ({ title, from, to, complete, tno, onDelete, onCompleteCanc
 
   // 완료 상태 변경 확인 시 서버에 상태를 업데이트한다
   const handleConfirmOk = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     setIsChecked(pendingChecked);
     setIsConfirmModalOpen(false);
     const writer = sessionStorage.getItem('username'); 
@@ -55,12 +69,15 @@ const CompleteCard = ({ title, from, to, complete, tno, onDelete, onCompleteCanc
         headers: { 'Content-Type': 'application/json' },
       });
       message.success('해당 항목이 완료 취소되었습니다!');
+      setRefreshTrigger(prev => prev + 1);
       if (onCompleteCancle) {
         onCompleteCancle();
       }
     } catch (error) {
       message.error('완료 취소 실패');
       console.error('완료 상태 업데이트 실패:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
