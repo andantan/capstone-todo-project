@@ -43,6 +43,24 @@ public final class TodoQueryController extends AbstractTodoController {
 
 
     @Operation(
+            summary = "월 단위 Todo 조회",
+            description = "ResponseQueryTodoDTO 형식에 따름"
+    )
+    @GetMapping(
+            value = "/query/list/month"
+    )
+    public Map<String, Object> queryDeletedTodoList(
+            @NotNull @Param("writer") String writer,
+            @NotNull @Param("date") LocalDate date
+    ) throws NoSuchElementException {
+
+        return this.todoQueryService.requestQueryMontlyTodoList(
+                RequestQueryTodoDTO.builder().writer(writer).date(date).build()
+        );
+    }
+
+
+    @Operation(
             summary = "삭제된 Todo 조회",
             description = "ResponseQueryTodoArchiveDTO 형식에 따름"
     )

@@ -118,4 +118,26 @@ public class TodoRepositoryTests {
     public LocalDateTime convertToEntityAttribute(String dbData) {
         return (dbData != null) ? LocalDateTime.parse(dbData, FORMATTER) : null;
     }
+
+
+    @Test
+    public void TodoRepositoryTestMonthlyQuery() {
+        RequestQueryTodoDTO requestQueryTodoDTO = RequestQueryTodoDTO.builder()
+                .writer("andantan").date(LocalDate.of(2025, 5, 31)).build();
+
+        LocalDateTime startOfMonth = LocalDateTime.of(
+                requestQueryTodoDTO.getDate().getYear(),
+                requestQueryTodoDTO.getDate().getMonth(),
+                1, 0, 0, 0
+        );
+
+        LocalDateTime endOfMonth = requestQueryTodoDTO.getDate().atTime(23, 59);
+
+        log.info("start: {}, end: {}", startOfMonth, endOfMonth);
+
+        List<TodoEntity> list = todoRepository.findMonthlyListByDate(requestQueryTodoDTO);
+        log.info(list);
+
+        list.forEach(entity -> log.info(projectionMapper.mapToDTO(entity)));
+    }
 }

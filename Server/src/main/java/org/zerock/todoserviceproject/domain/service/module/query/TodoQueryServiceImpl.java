@@ -55,6 +55,29 @@ public class TodoQueryServiceImpl implements TodoQueryService {
     }
 
     @Override
+    public Map<String, Object> requestQueryMontlyTodoList(RequestQueryTodoDTO requestQueryTodoDTO) {
+        List<TodoDTO> monthlyTodoDTOList = this.todoRepository.findMonthlyListByDate(requestQueryTodoDTO).stream()
+                .map(projectionMapper::mapToDTO)
+                .toList();
+
+        List<ResponseQueryTodoDTO> responseBodyMonthlyDTOList = monthlyTodoDTOList.stream()
+                .map(responseMapper::mapToQueryResponseTodoDTO)
+                .toList();
+
+        List<Map<String, String>> responseMappedMontlyTodoDTOList = responseBodyMonthlyDTOList.stream()
+                .map(responseMapper::getResponseMap)
+                .toList();
+
+        Map<String, Object> responseMap = new HashMap<>();
+
+        responseMap.put("execution", "query");
+        responseMap.put("list", responseMappedMontlyTodoDTOList);
+        responseMap.put("status", "success");
+
+        return responseMap;
+    }
+
+    @Override
     public Map<String, Object> requestQueryDeletedTodoList(String targetWriter) {
         List<TodoArchiveDTO> todoArchiveEntityList = this.archiveTodoRepository
                 .findDeletedListByWriter(targetWriter).stream()

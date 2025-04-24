@@ -10,5 +10,6 @@ import org.zerock.todoserviceproject.application.dto.todo.projection.request.Req
 public interface TodoQueryService {
 
     Map<String, Object> requestQueryTodoList(RequestQueryTodoDTO requestQueryTodoDTO);
+    Map<String, Object> requestQueryMontlyTodoList(RequestQueryTodoDTO requestQueryTodoDTO);
     Map<String, Object> requestQueryDeletedTodoList(String writer);
 }
