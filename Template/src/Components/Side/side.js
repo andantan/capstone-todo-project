@@ -1,13 +1,16 @@
 import './side.css';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import { refreshTriggerAtom } from '../../Recoil/Atoms/refreshatom.js';
+import { selectedDateState } from '../../Recoil/Atoms/dateatom.js';
 import { selectedMenuAtom } from '../../Recoil/Atoms/menuatom.js';
 import AnalogClock from '../Analogclock/analogclock.js';
 import Calendar from '../Calendar/calendar.js';
 import Modal from '../Modal/modal.js';
 import { IoList, IoCheckmarkCircleOutline, IoTrashOutline, IoLogOutOutline, IoArrowForwardOutline, IoArrowBackOutline } from 'react-icons/io5';
 import { Select } from 'antd';
+import axios from 'axios';
 
 const { Option } = Select;
 
@@ -16,11 +19,19 @@ const years = Array.from({ length: 11 }, (_, i) => currentYear - 5 + i);
 const months = Array.from({ length: 12 }, (_, i) => i + 1);
 
 const Side = () => {
+
+    const refreshTrigger = useRecoilValue(refreshTriggerAtom);
+    const selectedDate = useRecoilValue(selectedDateState);
+    
     const [currentTime, setCurrentTime] = useState(new Date());
-    const [currentMonth, setCurrentMonth] = useState(new Date());
+    const [currentMonth, setCurrentMonth] = useState(() => new Date(selectedDate));
     const [selectedMenu, setSelectedMenu] = useRecoilState(selectedMenuAtom);
     const [seconds, setSeconds] = useState(currentTime.getSeconds());
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [todoList, setTodoList] = useState([]);
+
+    const resetSelectedMenu = useResetRecoilState(selectedMenuAtom);
+    const resetSelectedDate = useResetRecoilState(selectedDateState); 
 
     const daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
     const dayOfWeek = daysOfWeek[currentTime.getDay()];
@@ -47,6 +58,32 @@ const Side = () => {
 
         return () => clearInterval(interval);
     }, [setSelectedMenu]);
+
+    // 월별 할 일 데이터를 가져오는 함수
+    useEffect(() => {
+        const fetchData = async () => {
+          const writer = sessionStorage.getItem('username');
+          if (!writer || !currentMonth) return;
+      
+          const year = currentMonth.getFullYear();
+          const month = currentMonth.getMonth() + 1;
+          const lastDay = new Date(year, month, 0).getDate();
+      
+          const formattedDate = `${year}-${String(month).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+      
+          try {
+            const { data } = await axios.get(`/api/todo/query/list/month`, {
+              params: { writer, date: formattedDate }
+            });
+            setTodoList(data.list);
+            console.log ("달력 api 응답 데이터", data);
+          } catch (error) {
+            console.error('달력 API 호출 오류:', error);
+          }
+        };
+      
+        fetchData();
+      }, [currentMonth, refreshTrigger]);
 
     // 현재 날짜를 yyyy/mm/dd 형식으로 포맷
     const formatDate = (date) => {
@@ -82,14 +119,13 @@ const Side = () => {
         setIsModalOpen(true);
     };
 
-    const resetSelectedMenu = useResetRecoilState(selectedMenuAtom);
-
     // 로그아웃 처리
     const handleLogout = () => {
         setIsModalOpen(false);
         sessionStorage.removeItem('username');
         localStorage.removeItem('selectedMenu');
         resetSelectedMenu();
+        resetSelectedDate();
         navigate('/');
     };
 
@@ -224,7 +260,7 @@ const Side = () => {
 
                         <IoArrowForwardOutline onClick={goToNextMonth} style={{ cursor: 'pointer', fontSize:'20px' }} />
                     </div>
-                    <Calendar currentMonth={currentMonth} onMonthChange={setCurrentMonth} />
+                    <Calendar currentMonth={currentMonth}  todoList={todoList} onMonthChange={setCurrentMonth} />
                 </section>
             </section>
             <Modal

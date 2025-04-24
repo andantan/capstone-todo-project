@@ -62,3 +62,7 @@
   .found-password {
     margin-left: 6px;
   }
+
+  .modal_input-field {
+    padding: 10px;
+  }

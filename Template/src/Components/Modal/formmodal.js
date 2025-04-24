@@ -1,5 +1,7 @@
 import { Modal, Input, Select, Radio, message, DatePicker, ConfigProvider } from 'antd';
 import { useState, useEffect } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { refreshTriggerAtom } from '../../Recoil/Atoms/refreshatom.js';
 import axios from 'axios';
 import './modal.css';
 import koKR from 'antd/lib/locale/ko_KR';
@@ -24,6 +26,9 @@ const FormModal = ({ isOpen, onOk, onCancel, title, postUrl, selectedDate }) => 
   const [endMinute, setEndMinute] = useState(undefined);
   const [startDate, setStartDate] = useState(dayjs(selectedDate));
   const [endDate, setEndDate] = useState(dayjs(selectedDate));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const setRefreshTrigger = useSetRecoilState(refreshTriggerAtom);
 
   // 모달이 열릴 때 selectedDate로 날짜 초기화
   useEffect(() => {
@@ -66,6 +71,9 @@ const FormModal = ({ isOpen, onOk, onCancel, title, postUrl, selectedDate }) => 
 
   // 확인 버튼 클릭 시 입력값 유효성 검사 및 API 요청
   const handleConfirm = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (newText.trim() === '') {
       message.error('할 일을 입력하세요!');
       return;
@@ -124,8 +132,11 @@ const FormModal = ({ isOpen, onOk, onCancel, title, postUrl, selectedDate }) => 
       onOk(response.data);
       message.success('해당 항목이 등록되었습니다.'); 
       resetForm();
+      setRefreshTrigger(prev => prev + 1);
     } catch (error) {
       console.error('API 요청 오류:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

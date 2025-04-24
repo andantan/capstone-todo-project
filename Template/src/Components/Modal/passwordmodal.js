@@ -10,6 +10,7 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
   const [isUserVerified, setIsUserVerified] = useState(false);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 전화번호 입력값 형식 지정
   const handlePhoneChange = (e) => {
@@ -37,6 +38,9 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
 
   // 사용자 정보 확인 요청
   const handleVerifyUser = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!userId) {
       message.error('아이디를 입력해주세요!');
       return;
@@ -69,11 +73,16 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
         message.error('본인 확인 중 오류가 발생했습니다.');
       }
       console.error('본인 확인 에러:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   // 비밀번호 변경 요청
   const handleChangePassword = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!newPassword) {
       message.error('새 비밀번호를 입력해주세요!');
       return;
@@ -116,6 +125,8 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
         message.error('비밀번호 변경 중 오류가 발생했습니다.');
       }
       console.error('비밀번호 변경 에러:', error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -141,18 +152,20 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
       <div className="modal-form-group" style={{ marginTop: '20px' }}>
         <label className="modal_label">ID</label>
         <Input
-          placeholder="아이디를 입력하세요"
+          placeholder="ID"
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
+          className='modal_input-field'
         />
       </div>
 
       <div className="modal-form-group">
         <label className="modal_label">이름</label>
         <Input
-          placeholder="이름을 입력하세요"
+          placeholder="name"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
+          className='modal_input-field'
         />
       </div>
 
@@ -160,9 +173,10 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
         <label className="modal_label">전화번호</label>
         <Input
           type="tel"
-          placeholder="010-1234-5678"
+          placeholder="phone number"
           value={userPhone}
           onChange={handlePhoneChange}
+          className='modal_input-field'
         />
       </div>
 
@@ -171,18 +185,20 @@ const PasswordModal = ({ isOpen, onOk, onCancel }) => {
           <div className="modal-form-group">
             <label className="modal_label">새 비밀번호</label>
             <Input.Password
-              placeholder="새 비밀번호를 입력하세요"
+              placeholder="new password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              className='modal_input-field'
             />
           </div>
 
           <div className="modal-form-group">
             <label className="modal_label">비밀번호 확인</label>
             <Input.Password
-              placeholder="비밀번호를 다시 입력하세요"
+              placeholder="password confirm"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              className='modal_input-field'
             />
           </div>
 

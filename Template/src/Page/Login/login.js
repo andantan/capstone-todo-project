@@ -10,6 +10,7 @@ const Login = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // 회원가입 페이지로 이동
   const goToJoin = () => {
@@ -18,6 +19,9 @@ const Login = () => {
 
   // 로그인 요청 처리
   const handleLogin = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     if (!username) {
       message.error('ID를 입력하세요!');
       return;
@@ -51,6 +55,8 @@ const Login = () => {
       } else {
         message.error('ID 혹은 비밀번호를 확인하세요.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -84,7 +90,7 @@ const Login = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Input
+          <Input.Password
             type="password"
             placeholder="Password"
             className="input-field"

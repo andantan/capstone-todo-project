@@ -1,5 +1,7 @@
 import './card.css';
 import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
+import { refreshTriggerAtom } from '../../Recoil/Atoms/refreshatom.js';
 import { IoMenu } from 'react-icons/io5';
 import { Dropdown, Space, Switch, message } from 'antd';
 import Modal from '../Modal/modal.js';
@@ -13,6 +15,9 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
   const [pendingChecked, setPendingChecked] = useState(complete);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('edit');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const setRefreshTrigger = useSetRecoilState(refreshTriggerAtom);
 
   // 메뉴 항목 클릭 핸들러 (수정 또는 삭제)
   const handleMenuClick = (e) => {
@@ -26,6 +31,9 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
 
   // 삭제 확인 모달에서 '확인' 클릭 시 서버에 삭제 요청
   const handleModalOk = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       const writer = sessionStorage.getItem('username'); 
       const delta = 3;
@@ -36,9 +44,12 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
 
       setIsModalOpen(false);
       message.success('해당 항목이 삭제되었습니다.');
+      setRefreshTrigger(prev => prev + 1);
       if (onDelete) onDelete(tno);
     } catch (error) {
       message.error('삭제 실패');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -55,6 +66,9 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
 
   // 완료 확인 모달에서 '확인' 클릭 시 서버에 완료 상태 업데이트
   const handleConfirmOk = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     setIsChecked(true);
     setIsConfirmModalOpen(false);
 
@@ -67,9 +81,12 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
       });
 
       message.success('해당 항목이 완료되었습니다.');
+      setRefreshTrigger(prev => prev + 1);
       if (onComplete) onComplete();
     } catch (error) {
       message.error('완료 처리 실패');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -82,6 +99,9 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
 
   // 수정 모달에서 '확인' 클릭 시 서버에 수정 데이터 전송
   const handleEditOk = async (updatedData) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       await axios.put(`/api/todo/modify`, updatedData);
       message.success('해당 항목이 수정되었습니다.');
@@ -89,6 +109,8 @@ const Card = ({ tno, title, from, to, complete, onEdit, onComplete, onDelete, se
       if (onEdit) onEdit(tno);
     } catch (error) {
       message.error('수정 실패');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

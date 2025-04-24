@@ -109,7 +109,7 @@ const Todolist = () => {
         <img src="/images/pin.webp" alt="Pushpin" className="mainpin-img" /> 
         <section className="todo_section">
           <div className='todo_img'>
-            <h2 style={{color:'#ffffff', fontSize:'40px'}}>{formattedDate}</h2>
+            <h2 style={{color:'#ffffff', fontSize:'40px',}}>{formattedDate}</h2>
           </div>
 
           <div className="todo_container">
