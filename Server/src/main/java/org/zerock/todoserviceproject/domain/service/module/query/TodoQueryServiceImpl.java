@@ -11,6 +11,7 @@ import org.zerock.todoserviceproject.application.dto.todo.map.ProjectionMapper;
 import org.zerock.todoserviceproject.application.dto.todo.map.ResponseMapper;
 import org.zerock.todoserviceproject.application.dto.todo.projection.request.RequestQueryTodoDTO;
 import org.zerock.todoserviceproject.application.dto.todo.projection.response.ResponseQueryTodoDTO;
+import org.zerock.todoserviceproject.domain.entity.archive.TodoArchiveEntity;
 import org.zerock.todoserviceproject.domain.repository.todoArchive.TodoArchiveRepository;
 import org.zerock.todoserviceproject.domain.repository.todo.TodoRepository;
 
@@ -24,7 +25,7 @@ import java.util.Map;
 public class TodoQueryServiceImpl implements TodoQueryService {
 
     private final TodoRepository todoRepository;
-    private final TodoArchiveRepository archiveTodoRepository;
+    private final TodoArchiveRepository todoArchiveRepository;
     private final ResponseMapper responseMapper;
     private final ProjectionMapper projectionMapper;
 
@@ -79,7 +80,9 @@ public class TodoQueryServiceImpl implements TodoQueryService {
 
     @Override
     public Map<String, Object> requestQueryDeletedTodoList(String targetWriter) {
-        List<TodoArchiveDTO> todoArchiveEntityList = this.archiveTodoRepository
+        this.cleanUpExpiredTodos(targetWriter);
+
+        List<TodoArchiveDTO> todoArchiveEntityList = this.todoArchiveRepository
                 .findDeletedListByWriter(targetWriter).stream()
                 .map(this.projectionMapper::mapToDTO)
                 .toList();
@@ -99,6 +102,18 @@ public class TodoQueryServiceImpl implements TodoQueryService {
         responseMap.put("status", "success");
 
         return responseMap;
+
+    }
+
+
+    private void cleanUpExpiredTodos(String targetWriter) {
+        List<Long> expiredDeletedTodoEntitieTnos =
+                this.todoArchiveRepository.findRemoveExpiredTargets(targetWriter)
+                        .stream()
+                        .map(TodoArchiveEntity::getTno)
+                        .toList();
+
+        this.todoArchiveRepository.deleteAllById(expiredDeletedTodoEntitieTnos);
 
     }
 }
